@@ -344,7 +344,7 @@ function openDetail(id){
   ov.innerHTML='<div class="modal"><div class="d-img" style="background:'+bottleBg(p)+'"><button class="close" onclick="closeDetail()">✕</button>'+renderBottleLarge(p)+'</div><div class="d-body"><div class="d-name">'+escHtml(p.name)+'</div><div class="d-meta">'+p.alc+' · '+p.vol+' · 评分 '+p.rank+' · 已售 '+fmtNum(p.sales)+'</div><div class="d-price">¥'+p.price+'</div>'+(p.orig>p.price?'<div class="d-orig">官网价 ¥'+p.orig+'</div>':'')+'<div class="d-desc">'+p.desc+'</div><div class="d-actions"><button class="btn btn-out" onclick="addToCart('+p.id+');closeDetail()">🛒 加入购物车</button><button class="btn btn-gold" onclick="addToCart('+p.id+');closeDetail();buyNow()">⚡ 立即购买</button></div></div></div>';
   ov.classList.add('open')
 }
-function renderBottleLarge(p){return renderBottle(p,false).replace('b-wrap','b-wrap').replace('width:85px;height:135px','width:130px;height:210px').replace('b-body','b-body').replace('width:58px;height:95px','width:90px;height:150px;border-radius:20px 20px 8px 8px').replace('b-label','b-label').replace('26px','40px').replace('18px','28px').replace('b-neck','b-neck').replace('width:22px;height:18px','width:34px;height:28px').replace('b-cap','b-cap').replace('width:26px;height:13px','width:40px;height:20px').replace('bl-b','bl-b').replace('font-size:8px','font-size:13px').replace('bl-t','bl-t').replace('font-size:6px','font-size:9px').replace('bl-a','bl-a').replace('font-size:7px','font-size:10px')}
+function renderBottleLarge(p){return '<div style="transform:scale(1.55);transform-origin:center center">'+renderBottle(p,false)+'</div>'}
 function closeDetail(){document.getElementById('detailOverlay').classList.remove('open')}
 
 // ============ 购物车 ============
