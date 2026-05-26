@@ -147,6 +147,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .pwd-overlay button{padding:12px 40px;border-radius:26px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:700;font-size:15px;cursor:pointer;letter-spacing:2px;font-family:inherit}
 .pwd-overlay .cancel{background:transparent;border:none;color:var(--text2);font-size:13px;letter-spacing:1px;margin-top:8px}
 
+.card .img img.product-img{width:100%;height:100%;object-fit:cover;position:relative;z-index:1}
+.card .img .no-img{position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.modal .d-img img.product-img-large{width:70%;height:70%;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
+.modal .d-img .no-img-large{position:relative;z-index:1}
 .toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.9);color:var(--gold);padding:12px 28px;border-radius:24px;font-size:13px;z-index:400;pointer-events:none;letter-spacing:1px;border:1px solid rgba(212,168,83,.2)}
 .empty{text-align:center;padding:60px;color:var(--text2)}
 .empty .icon{font-size:48px;margin-bottom:10px}
@@ -236,8 +240,13 @@ function toast(msg){
 }
 
 // ============ 瓶身渲染 ============
-function bottleHTML(p){
-  var cap='',label='',h='<div class="b-wrap">';
+function bottleHTML(p,large){
+  if(p.img){
+    var cls=large?'product-img-large':'product-img';
+    return '<img src="'+escA(p.img)+'" class="'+cls+'" alt="'+escH(p.name)+'" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.no-img\').style.display=\'flex\'">';
+  }
+  var cap='',label='',wrapCls=large?'no-img-large':'no-img';
+  var h='<div class="b-wrap '+wrapCls+'">';
   if(p.b==='beer'){cap='background:'+p.bcolor;label='background:'+p.bcolor+';color:'+(p.btext||'#fff')}
   else if(p.b==='gift'){cap='background:linear-gradient(180deg,#ffd700,#c8a020)';label='background:rgba(0,0,0,.4);color:#ffd700'}
   h+='<div class="b-cap" style="'+cap+'"></div><div class="b-neck"></div><div class="b-body"><div class="b-label" style="'+label+'">';
@@ -252,12 +261,10 @@ function bottleBg(p){
 
 // ============ 商品卡片 ============
 function cardHTML(p){
-  return '<div class="card" data-id="'+p.id+'"><div class="img" style="background:'+bottleBg(p)+'">'
-    +bottleHTML(p)+(p.tag?'<span class="tag">'+p.tag+'</span>':'')
-    +'</div><div class="info"><div class="name">'+escH(p.name)+'</div>'
-    +'<div class="meta">'+p.alc+' · '+p.vol+' · 已售'+fmtN(p.sales)+'</div>'
-    +'<div class="price-row"><span class="price">¥'+p.price+'</span>'
-    +'<button class="add-btn" data-add="'+p.id+'">+</button></div></div></div>';
+  var imgHtml=p.img?bottleHTML(p,false):'<div class="no-img" style="display:flex">'+bottleHTML(p,false)+'</div>';
+  if(p.img)imgHtml=imgHtml+'<div class="no-img" style="display:none">'+bottleHTML(p,false)+'</div>';
+  else imgHtml='<div class="no-img">'+bottleHTML(p,false)+'</div>';
+  return '<div class="card" data-id="'+p.id+'"><div class="img" style="background:'+bottleBg(p)+'">'+imgHtml+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div><div class="info"><div class="name">'+escH(p.name)+'</div><div class="meta">'+p.alc+' · '+p.vol+' · 已售'+fmtN(p.sales)+'</div><div class="price-row"><span class="price">¥'+p.price+'</span><button class="add-btn" data-add="'+p.id+'">+</button></div></div></div>'
 }
 
 // ============ 渲染首页 ============
@@ -302,7 +309,14 @@ function bindCardEvents(){
 function openDetail(id){
   var p=products.find(function(p){return p.id===id});if(!p)return;
   var ov=document.getElementById('detailOverlay');
-  var h='<div class="modal"><div class="d-img" style="background:'+bottleBg(p)+'"><button class="d-close" id="dClose">✕</button><div style="transform:scale(1.5)">'+bottleHTML(p)+'</div></div>';
+  var h='<div class="modal"><div class="d-img" style="background:'+bottleBg(p)+'"><button class="d-close" id="dClose">✕</button>';
+  if(p.img){
+    h+='<img src="'+escA(p.img)+'" class="product-img-large" alt="'+escH(p.name)+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">';
+    h+='<div class="no-img-large" style="display:none"><div style="transform:scale(1.5)">'+bottleHTML(p,false)+'</div></div>';
+  }else{
+    h+='<div style="transform:scale(1.5)">'+bottleHTML(p,false)+'</div>';
+  }
+  h+='</div>';
   h+='<div class="d-body"><div class="d-name">'+escH(p.name)+'</div><div class="d-meta">'+p.alc+' · '+p.vol+' · 评分 '+p.rank+' · 已售 '+fmtN(p.sales)+'</div>';
   h+='<div class="d-price">¥'+p.price+'</div>'+(p.orig>p.price?'<div class="d-orig">官网价 ¥'+p.orig+'</div>':'');
   h+='<div class="d-desc">'+p.desc+'</div><div class="d-actions">';
@@ -463,6 +477,7 @@ function editProduct(i){
   h+='<div class="fg-row"><div class="fg"><label>品牌</label><input id="epBrand" value="'+escA(p.brand)+'"></div><div class="fg"><label>型号</label><input id="epBtype" value="'+escA(p.btype)+'"></div></div>';
   h+='<div class="fg-row"><div class="fg"><label>酒精度</label><input id="epAlc" value="'+escA(p.alc)+'"></div><div class="fg"><label>容量</label><input id="epVol" value="'+escA(p.vol)+'"></div></div>';
   h+='<div class="fg-row"><div class="fg"><label>评分</label><input id="epRank" type="number" step="0.1" value="'+p.rank+'"></div><div class="fg"><label>销量</label><input id="epSales" type="number" value="'+p.sales+'"></div></div>';
+  h+='<div class="fg"><label>图片 URL</label><input id="epImg" value="'+escA(p.img||'')+'" placeholder="留空则显示CSS瓶身"><div style="font-size:10px;color:var(--text2);margin-top:4px">填入图片链接后会替代CSS瓶身，留空则使用手绘瓶身</div></div>';
   h+='<div class="fg"><label>标签</label><input id="epTag" value="'+escA(p.tag||'')+'"></div>';
   h+='<div class="fg"><label>描述</label><textarea id="epDesc" rows="3">'+escH(p.desc)+'</textarea></div>';
   h+='<button class="btn btn-gold" style="width:100%;margin-top:8px" id="epSave">保存</button></div></div>';
@@ -481,6 +496,7 @@ function editProduct(i){
     p.rank=parseFloat(document.getElementById('epRank').value)||0;
     p.sales=parseInt(document.getElementById('epSales').value)||0;
     p.tag=document.getElementById('epTag').value.trim();
+    p.img=document.getElementById('epImg').value.trim();
     p.desc=document.getElementById('epDesc').value.trim();
     saveProducts();renderAdmin();renderHome();toast('已保存')
   }
