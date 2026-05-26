@@ -477,12 +477,34 @@ function editProduct(i){
   h+='<div class="fg-row"><div class="fg"><label>品牌</label><input id="epBrand" value="'+escA(p.brand)+'"></div><div class="fg"><label>型号</label><input id="epBtype" value="'+escA(p.btype)+'"></div></div>';
   h+='<div class="fg-row"><div class="fg"><label>酒精度</label><input id="epAlc" value="'+escA(p.alc)+'"></div><div class="fg"><label>容量</label><input id="epVol" value="'+escA(p.vol)+'"></div></div>';
   h+='<div class="fg-row"><div class="fg"><label>评分</label><input id="epRank" type="number" step="0.1" value="'+p.rank+'"></div><div class="fg"><label>销量</label><input id="epSales" type="number" value="'+p.sales+'"></div></div>';
-  h+='<div class="fg"><label>图片 URL</label><input id="epImg" value="'+escA(p.img||'')+'" placeholder="留空则显示CSS瓶身"><div style="font-size:10px;color:var(--text2);margin-top:4px">填入图片链接后会替代CSS瓶身，留空则使用手绘瓶身</div></div>';
+  h+='<div class="fg"><label>图片</label><div style="display:flex;gap:8px;align-items:center"><input id="epImg" value="'+escA(p.img||'')+'" placeholder="图片URL或直接上传" style="flex:1"><input type="file" id="epImgFile" accept="image/*" style="display:none"><button class="btn-sm ghost" id="epImgBtn" style="flex-shrink:0">📷 上传</button></div>';
+  if(p.img)h+='<img src="'+escA(p.img)+'" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin-top:6px;border:1px solid rgba(255,255,255,.1)" id="epImgPreview">';
+  h+='<div style="font-size:10px;color:var(--text2);margin-top:4px">上传或粘贴图片链接，留空显示CSS瓶身</div></div>';
   h+='<div class="fg"><label>标签</label><input id="epTag" value="'+escA(p.tag||'')+'"></div>';
   h+='<div class="fg"><label>描述</label><textarea id="epDesc" rows="3">'+escH(p.desc)+'</textarea></div>';
   h+='<button class="btn btn-gold" style="width:100%;margin-top:8px" id="epSave">保存</button></div></div>';
   document.getElementById('adminContent').innerHTML=h;
   document.getElementById('edBack').onclick=renderAdmin;
+  // 图片上传
+  document.getElementById('epImgBtn').onclick=function(){document.getElementById('epImgFile').click()};
+  document.getElementById('epImgFile').onchange=function(e){
+    var f=e.target.files[0];if(!f)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      // 压缩图片
+      var img=new Image();img.onload=function(){
+        var maxW=400,maxH=400,w=img.width,h=img.height;
+        if(w>maxW||h>maxH){var r=Math.min(maxW/w,maxH/h);w=Math.round(w*r);h=Math.round(h*r)}
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        var ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);
+        var data=c.toDataURL('image/jpeg',0.7);
+        document.getElementById('epImg').value=data;
+        var pv=document.getElementById('epImgPreview');
+        if(pv)pv.src=data;
+        else{var nv=document.createElement('img');nv.src=data;nv.style.cssText='width:80px;height:80px;object-fit:cover;border-radius:8px;margin-top:6px;border:1px solid rgba(255,255,255,.1)';nv.id='epImgPreview';document.getElementById('epImg').parentElement.parentElement.appendChild(nv)}
+      };img.src=ev.target.result
+    };reader.readAsDataURL(f)
+  };
   document.getElementById('epSave').onclick=function(){
     p.name=document.getElementById('epName').value.trim();
     p.price=parseFloat(document.getElementById('epPrice').value)||0;
