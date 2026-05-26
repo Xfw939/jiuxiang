@@ -6,218 +6,152 @@
 <title>酒巷 · 精选好酒</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --gold:#d4a853;--gold2:#c9973a;--gold3:#b8860b;--dark:#0d0d0d;--dark2:#1a1a1a;--dark3:#222;
-  --red:#c0392b;--text:#e8e0d0;--text2:#a09888;--white:#fff;--radius:14px;--shadow:0 8px 40px rgba(0,0,0,.5);
-}
+:root{--gold:#d4a853;--gold2:#c9973a;--dark:#0d0d0d;--dark2:#1a1a1a;--dark3:#252525;--red:#c0392b;--text:#e0d8c8;--text2:#8a8070;--radius:14px}
 body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#000;display:flex;justify-content:center;min-height:100vh}
-.phone{width:430px;max-width:100vw;min-height:100vh;background:var(--dark);position:relative;overflow-x:hidden;box-shadow:0 0 80px rgba(212,168,83,.08);display:flex;flex-direction:column}
-
-/* Navbar */
-.navbar{position:sticky;top:0;z-index:50;background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(212,168,83,.12)}
-.navbar .logo{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:4px;cursor:pointer}
+.phone{width:430px;max-width:100vw;min-height:100vh;background:var(--dark);position:relative;overflow-x:hidden;box-shadow:0 0 80px rgba(212,168,83,.06);display:flex;flex-direction:column}
+.navbar{position:sticky;top:0;z-index:50;background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(212,168,83,.1);flex-shrink:0}
+.navbar .logo{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:4px;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .navbar .spacer{flex:1}
-.navbar .nav-btn{background:none;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:18px;cursor:pointer;padding:8px 12px;border-radius:20px;position:relative;transition:all .2s}
-.navbar .nav-btn:active{background:rgba(255,255,255,.05)}
+.navbar .nav-btn{background:none;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:18px;cursor:pointer;padding:8px 12px;border-radius:20px;position:relative;-webkit-tap-highlight-color:transparent}
 .navbar .badge{position:absolute;top:-4px;right:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;padding:0 4px}
-.page{display:none;flex:1;overflow-y:auto}
+.page{display:none;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .page.active{display:block}
-
-/* Hero */
-.hero{margin:20px 16px;height:180px;border-radius:var(--radius);background:linear-gradient(135deg,#1a1208 0%,#2d1f0e 30%,#1a1008 60%,#0d0804 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding:0 28px;border:1px solid rgba(212,168,83,.1)}
+.hero{margin:20px 16px;height:180px;border-radius:var(--radius);background:linear-gradient(135deg,#1a1208,#2d1f0e 30%,#1a1008 60%,#0d0804);position:relative;overflow:hidden;display:flex;align-items:center;padding:0 28px;border:1px solid rgba(212,168,83,.1)}
 .hero::before{content:'';position:absolute;right:-40px;top:-60px;width:240px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.1) 0%,transparent 70%)}
-.hero::after{content:'';position:absolute;left:20px;bottom:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.04) 0%,transparent 70%)}
 .hero-text{position:relative;z-index:1}
 .hero-text h2{font-size:30px;font-weight:900;color:var(--gold);letter-spacing:3px;line-height:1.2;text-shadow:0 0 40px rgba(212,168,83,.3)}
 .hero-text p{font-size:13px;color:var(--text2);margin-top:8px;letter-spacing:2px}
-
-/* Search */
 .search-wrap{margin:0 16px 16px}
-.search-box{display:flex;align-items:center;background:var(--dark2);border-radius:28px;padding:12px 18px;border:1px solid rgba(255,255,255,.06);transition:all .3s}
-.search-box:focus-within{border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,83,.1)}
+.search-box{display:flex;align-items:center;background:var(--dark2);border-radius:28px;padding:12px 18px;border:1px solid rgba(255,255,255,.06)}
 .search-box input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--text);font-family:inherit}
 .search-box input::placeholder{color:rgba(255,255,255,.2)}
-.search-box .s-icon{color:var(--gold);font-size:18px;margin-right:10px}
-
-/* Categories */
+.s-icon{color:var(--gold);font-size:18px;margin-right:10px}
 .cats{display:flex;gap:10px;padding:0 16px 18px;overflow-x:auto;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
-.cat-chip{flex-shrink:0;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:600;cursor:pointer;background:var(--dark2);color:var(--text2);border:1px solid rgba(255,255,255,.05);transition:all .3s;white-space:nowrap;letter-spacing:1px}
+.cat-chip{flex-shrink:0;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:600;cursor:pointer;background:var(--dark2);color:var(--text2);border:1px solid rgba(255,255,255,.05);white-space:nowrap;letter-spacing:1px;-webkit-tap-highlight-color:transparent}
 .cat-chip.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border-color:transparent;box-shadow:0 4px 20px rgba(212,168,83,.25)}
-
-/* Section */
 .sec-title{display:flex;align-items:center;gap:10px;padding:8px 16px 14px;color:var(--gold);font-size:17px;font-weight:700;letter-spacing:2px}
 .sec-title::before{content:'';width:3px;height:18px;background:linear-gradient(180deg,var(--gold),transparent);border-radius:2px}
-.sec-title .more{flex:1;text-align:right;font-size:12px;color:var(--text2);font-weight:400;letter-spacing:1px}
-
-/* Grid */
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px 20px}
-.card{background:var(--dark2);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s;border:1px solid rgba(255,255,255,.04);position:relative}
+.card{background:var(--dark2);border-radius:var(--radius);overflow:hidden;cursor:pointer;border:1px solid rgba(255,255,255,.04);-webkit-tap-highlight-color:transparent;transition:transform .2s}
 .card:active{transform:scale(.96)}
 .card .img{height:175px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .card .tag{position:absolute;top:10px;left:10px;background:var(--red);color:#fff;font-size:10px;padding:3px 10px;border-radius:4px;font-weight:600;z-index:2;letter-spacing:1px}
 .card .info{padding:14px 16px 16px}
-.card .name{font-size:13px;font-weight:600;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:.5px}
-.card .meta{font-size:11px;color:var(--text2);margin:6px 0 8px;letter-spacing:.5px}
+.card .name{font-size:13px;font-weight:600;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .meta{font-size:11px;color:var(--text2);margin:6px 0 8px}
 .card .price-row{display:flex;align-items:baseline;justify-content:space-between}
-.card .price{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px}
-.card .add-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-weight:700}
+.card .price{font-size:22px;font-weight:900;color:var(--gold)}
+.card .add-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;-webkit-tap-highlight-color:transparent}
 .card .add-btn:active{transform:scale(.8)}
 
-/* CSS Bottles */
+/* Bottles */
 .b-wrap{position:relative;width:85px;height:135px;display:flex;flex-direction:column;align-items:center;z-index:1}
 .b-body{width:58px;height:95px;border-radius:12px 12px 5px 5px;position:relative;overflow:hidden;box-shadow:inset 2px 0 10px rgba(255,255,255,.2),inset -2px 0 8px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.3)}
 .b-body::after{content:'';position:absolute;left:4px;top:0;width:10px;height:100%;background:linear-gradient(90deg,rgba(255,255,255,.4) 0%,rgba(255,255,255,.04) 100%);border-radius:50%}
-.b-label{position:absolute;left:5px;right:5px;top:26px;bottom:18px;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.b-label{position:absolute;left:5px;right:5px;top:26px;bottom:18px;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px}
 .b-label .bl-b{font-size:8px;font-weight:900;letter-spacing:2px;text-align:center;line-height:1.2}
 .b-label .bl-t{font-size:6px;font-weight:500;opacity:.8;margin-top:1px;letter-spacing:1px}
 .b-label .bl-a{font-size:7px;font-weight:700;margin-top:2px}
-.b-neck{width:22px;height:18px;border-radius:3px 3px 0 0;box-shadow:inset 2px 0 6px rgba(255,255,255,.15),inset -1px 0 4px rgba(0,0,0,.15)}
-.b-cap{width:26px;height:13px;border-radius:4px 4px 2px 2px;box-shadow:0 -1px 4px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.15)}
-.b-maotai .b-body{background:linear-gradient(180deg,#fafaf5,#f0ece2 15%,#e8e3d5 50%,#ddd8c8)}
-.b-maotai .b-label{background:linear-gradient(180deg,#c41e2a,#a01822);color:#fff}
-.b-maotai .bl-b{color:#ffd700;font-size:9px}
-.b-maotai .b-neck{background:linear-gradient(180deg,#f5f0e8,#e0d8c8)}
-.b-maotai .b-cap{background:linear-gradient(180deg,#c41e2a,#8b0000)}
-.b-wuliangye .b-body{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(225,225,238,.5),rgba(255,255,255,.7));border:1px solid rgba(200,200,215,.5)}
-.b-wuliangye .b-label{background:linear-gradient(180deg,#d4213d,#aa1830);color:#fff}
-.b-wuliangye .bl-b{color:#ffd700}
-.b-wuliangye .b-neck{background:rgba(255,255,255,.8);border:1px solid rgba(200,200,215,.3);border-bottom:none}
-.b-wuliangye .b-cap{background:linear-gradient(180deg,#d4213d,#8b1525)}
-.b-jiannanchun .b-body{background:linear-gradient(180deg,rgba(215,220,238,.9),rgba(195,205,228,.7),rgba(215,220,238,.9));border:1px solid rgba(175,185,210,.4)}
-.b-jiannanchun .b-label{background:linear-gradient(180deg,#c8102e,#9a0c22);color:#fff}
-.b-jiannanchun .bl-b{color:#ffd700}
-.b-jiannanchun .b-neck{background:rgba(215,220,238,.9);border:1px solid rgba(175,185,210,.3);border-bottom:none}
-.b-jiannanchun .b-cap{background:linear-gradient(180deg,#c8102e,#7a0818)}
-.b-langjiu .b-body{background:linear-gradient(180deg,#d4212a,#b81c24,#8b1318)}
-.b-langjiu .b-label{background:rgba(0,0,0,.5);color:#ffd700}
-.b-langjiu .bl-b{color:#ffd700}
-.b-langjiu .b-neck{background:linear-gradient(180deg,#c41e2a,#a01822)}
-.b-langjiu .b-cap{background:linear-gradient(180deg,#ffd700,#c8a020)}
-.b-wine .b-body{width:52px;height:100px;border-radius:5px;background:linear-gradient(180deg,#152d15,#0a180a,#152815)}
-.b-wine .b-label{background:linear-gradient(180deg,#f5f0e8,#e8e0d0);color:#333}
-.b-wine .bl-b{color:#6b0000;font-size:7px}
-.b-wine .b-neck{width:16px;background:linear-gradient(180deg,#152d15,#0a180a)}
-.b-wine .b-cap{width:20px;background:linear-gradient(180deg,#2d1f0e,#1a1008)}
-.b-spirit .b-body{width:52px;height:96px;border-radius:3px;background:linear-gradient(180deg,#d4a860,#b8863a,#8b6518)}
-.b-spirit .b-label{background:rgba(255,255,255,.9);color:#1a1a1a}
-.b-spirit .bl-b{color:#4a3010;font-size:7px}
-.b-spirit .b-neck{width:18px;height:24px;border-radius:2px;background:linear-gradient(180deg,#d4a860,#b8863a)}
-.b-spirit .b-cap{width:20px;background:linear-gradient(180deg,#2d1f0e,#1a1008)}
-.b-beer .b-body{width:46px;height:108px;border-radius:10px 10px 4px 4px}
-.b-beer .b-label{top:16px;bottom:26px;border-radius:4px}
-.b-beer .b-neck{width:14px;height:6px;border-radius:2px}
-.b-beer .b-cap{width:18px;height:5px;border-radius:2px}
-.b-sake .b-body{width:46px;height:104px;border-radius:5px}
-.b-sake .b-label{top:30px;bottom:20px}
-.b-sake .b-neck{width:16px;height:22px}
-.b-sake .b-cap{width:20px;height:9px}
-.b-gift .b-body{width:62px;height:88px;border-radius:7px}
-.b-gift .b-label{background:rgba(0,0,0,.4);color:#ffd700}
-.b-gift .b-cap{background:linear-gradient(180deg,#ffd700,#c8a020);width:30px}
+.b-neck{width:22px;height:18px;border-radius:3px 3px 0 0}
+.b-cap{width:26px;height:13px;border-radius:4px 4px 2px 2px}
 
-/* Detail */
+/* Modal */
 .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{width:430px;max-width:100vw;max-height:88vh;background:var(--dark2);border-radius:22px 22px 0 0;overflow-y:auto;animation:slideUp .35s ease;border-top:1px solid rgba(212,168,83,.15)}
+.modal-overlay.show{display:flex}
+.modal{width:430px;max-width:100vw;max-height:88vh;background:var(--dark2);border-radius:22px 22px 0 0;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideUp .35s ease;border-top:1px solid rgba(212,168,83,.15)}
 @keyframes slideUp{from{transform:translateY(100%)}}
-.modal .d-img{height:320px;display:flex;align-items:center;justify-content:center;position:relative}
-.modal .d-img .close{position:absolute;top:16px;right:16px;z-index:5;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.modal .d-img{height:300px;display:flex;align-items:center;justify-content:center;position:relative}
+.modal .d-close{position:absolute;top:16px;right:16px;z-index:5;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .modal .d-body{padding:22px 20px 34px}
 .modal .d-name{font-size:20px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:8px}
-.modal .d-meta{font-size:12px;color:var(--text2);margin-bottom:16px;letter-spacing:.5px}
+.modal .d-meta{font-size:12px;color:var(--text2);margin-bottom:16px}
 .modal .d-price{font-size:36px;font-weight:900;color:var(--gold);margin-bottom:4px}
 .modal .d-orig{font-size:13px;color:var(--text2);text-decoration:line-through;margin-bottom:8px}
 .modal .d-desc{font-size:14px;color:var(--text2);line-height:1.9;margin:18px 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
 .modal .d-actions{display:flex;gap:10px}
-.btn{flex:1;padding:15px;border:none;border-radius:26px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:2px;font-family:inherit;transition:all .2s}
+.btn{flex:1;padding:15px;border:none;border-radius:26px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:2px;font-family:inherit;-webkit-tap-highlight-color:transparent}
 .btn-out{background:rgba(255,255,255,.05);color:var(--text);border:1px solid rgba(255,255,255,.1)}
-.btn-out:active{background:rgba(255,255,255,.1)}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
-.btn-gold:active{opacity:.8}
 
 /* Cart */
 .cart-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:flex-end;justify-content:center}
-.cart-overlay.open{display:flex}
+.cart-overlay.show{display:flex}
 .cart-drawer{width:430px;max-width:100vw;max-height:70vh;background:var(--dark2);border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:slideUp .35s ease;border-top:1px solid rgba(212,168,83,.15)}
-.cart-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--text);font-size:17px;font-weight:700;letter-spacing:1px}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--text);font-size:17px;font-weight:700}
 .cart-head button{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer}
 .cart-items{flex:1;overflow-y:auto;padding:10px 0;max-height:260px}
 .cart-item{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.03)}
 .cart-item .ci-img{width:44px;height:68px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transform:scale(.5)}
 .cart-item .ci-info{flex:1}
 .cart-item .ci-name{font-size:13px;color:var(--text);font-weight:600}
-.cart-item .ci-price{font-size:15px;font-weight:700;color:var(--gold);margin-top:2px}
-.cart-item .qty-ctrl{display:flex;align-items:center;gap:10px}
-.cart-item .qty-ctrl button{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cart-item .ci-price{font-size:15px;font-weight:700;color:var(--gold)}
+.qty-ctrl{display:flex;align-items:center;gap:10px}
+.qty-ctrl button{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .cart-foot{padding:18px 22px;border-top:1px solid rgba(255,255,255,.06)}
 .cart-foot .total{display:flex;justify-content:space-between;font-size:17px;font-weight:700;color:var(--text);margin-bottom:14px}
 .cart-foot .total .amt{color:var(--gold);font-size:24px}
 
-/* Checkout */
+/* Others */
 .chk-sec{background:var(--dark2);margin:0 16px 14px;border-radius:var(--radius);padding:18px;border:1px solid rgba(255,255,255,.04)}
-.chk-sec .chk-label{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:3px;margin-bottom:12px;text-transform:uppercase}
-.chk-input{width:100%;padding:12px 14px;border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;background:var(--dark3);color:var(--text);transition:border .2s}
+.chk-label{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:3px;margin-bottom:12px}
+.chk-input{width:100%;padding:12px 14px;border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;background:var(--dark3);color:var(--text)}
 .chk-input:focus{border-color:var(--gold)}
-.pay-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid rgba(255,255,255,.06);border-radius:12px;cursor:pointer;margin-bottom:8px;transition:all .3s}
-.pay-opt.active{border-color:var(--gold);background:rgba(212,168,83,.05)}
-.pay-opt .pay-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.pay-opt.active .pay-dot{border-color:var(--gold)}
-.pay-opt.active .pay-dot::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--gold)}
-.pay-opt .pay-label{font-size:15px;font-weight:600;color:var(--text)}
+.pay-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid rgba(255,255,255,.06);border-radius:12px;cursor:pointer;margin-bottom:8px}
+.pay-opt.sel{border-color:var(--gold);background:rgba(212,168,83,.05)}
+.pay-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pay-opt.sel .pay-dot{border-color:var(--gold)}
+.pay-opt.sel .pay-dot::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.pay-label{font-size:15px;font-weight:600;color:var(--text)}
 .qr-wrap{text-align:center;padding:24px 20px}
-.qr-wrap .qr-amt{font-size:28px;font-weight:900;color:var(--gold);margin-bottom:6px}
-.qr-wrap .qr-box{width:200px;height:200px;margin:0 auto 14px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--dark3);border:1px solid rgba(255,255,255,.06)}
-.qr-wrap .qr-box img{width:100%;height:100%;object-fit:contain}
-.qr-wrap .qr-hint{font-size:12px;color:var(--text2);margin-bottom:14px}
-.upload-zone{border:2px dashed rgba(255,255,255,.1);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .2s}
-.upload-zone:hover{border-color:var(--gold)}
+.qr-amt{font-size:28px;font-weight:900;color:var(--gold);margin-bottom:6px}
+.qr-box{width:200px;height:200px;margin:0 auto 14px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--dark3);border:1px solid rgba(255,255,255,.06)}
+.qr-box img{width:100%;height:100%;object-fit:contain}
+.qr-hint{font-size:12px;color:var(--text2);margin-bottom:14px}
+.upload-zone{border:2px dashed rgba(255,255,255,.1);border-radius:12px;padding:22px;text-align:center;cursor:pointer}
 .upload-zone img{max-width:100%;max-height:180px;border-radius:8px;display:none}
-.upload-zone .up-text{color:var(--text2);font-size:13px}
-
-/* Orders */
+.up-text{color:var(--text2);font-size:13px}
 .order-card{background:var(--dark2);border-radius:var(--radius);padding:18px;margin:0 16px 12px;border:1px solid rgba(255,255,255,.04)}
 .oc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .oc-id{font-size:11px;color:var(--text2)}
-.oc-status{font-size:11px;padding:4px 10px;border-radius:12px;font-weight:600;letter-spacing:1px}
-.oc-status.pending{background:rgba(200,160,0,.15);color:#c8a000}
-.oc-status.paid{background:rgba(39,174,96,.15);color:#27ae60}
-.oc-status.shipped{background:rgba(52,152,219,.15);color:#3498db}
-.oc-products{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:8px}
+.oc-st{font-size:11px;padding:4px 10px;border-radius:12px;font-weight:600}
+.oc-st.pending{background:rgba(200,160,0,.15);color:#c8a000}
+.oc-st.paid{background:rgba(39,174,96,.15);color:#27ae60}
+.oc-st.shipped{background:rgba(52,152,219,.15);color:#3498db}
+.oc-prods{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:8px}
 .oc-total{font-size:20px;font-weight:700;color:var(--gold);text-align:right}
 .oc-actions{display:flex;gap:8px;margin-top:10px}
-.btn-sm{padding:8px 18px;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:1px;transition:all .2s}
+.btn-sm{padding:8px 18px;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:1px}
 .btn-sm.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none}
 .btn-sm.ghost{background:transparent;color:var(--text2);border:1px solid rgba(255,255,255,.1)}
 
-/* Admin */
 .admin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:300;display:none;align-items:center;justify-content:center}
-.admin-overlay.open{display:flex}
+.admin-overlay.show{display:flex}
 .admin-panel{width:430px;max-width:95vw;max-height:90vh;background:var(--dark2);border-radius:18px;overflow-y:auto;border:1px solid rgba(212,168,83,.2)}
 .admin-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:var(--dark2);z-index:1}
 .admin-head h3{color:var(--gold);font-size:16px;letter-spacing:2px}
 .admin-head button{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer}
 .admin-body{padding:16px 20px}
-.admin-body .fg{margin-bottom:12px}
-.admin-body .fg label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:2px}
-.admin-body .fg input,.admin-body .fg textarea,.admin-body .fg select{width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:var(--dark3);color:var(--text);transition:border .2s}
-.admin-body .fg input:focus,.admin-body .fg textarea:focus,.admin-body .fg select:focus{border-color:var(--gold)}
-.admin-body .fg textarea{resize:vertical;min-height:60px}
-.admin-body .fg-row{display:flex;gap:8px}
-.admin-body .fg-row .fg{flex:1}
-.admin-pwd{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:310;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
-.admin-pwd h3{color:var(--gold);letter-spacing:3px;font-size:18px}
-.admin-pwd input{padding:12px 18px;border-radius:26px;border:1px solid rgba(212,168,83,.3);background:var(--dark3);color:var(--text);font-size:16px;text-align:center;outline:none;letter-spacing:4px;font-family:inherit;width:200px}
-.admin-pwd input:focus{border-color:var(--gold)}
-.admin-pwd button{padding:12px 40px;border-radius:26px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:700;font-size:15px;cursor:pointer;letter-spacing:2px;font-family:inherit}
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:2px}
+.fg input,.fg textarea,.fg select{width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:var(--dark3);color:var(--text)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--gold)}
+.fg textarea{resize:vertical;min-height:60px}
+.fg-row{display:flex;gap:8px}
+.fg-row .fg{flex:1}
 
-/* Toast */
-.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.9);color:var(--gold);padding:12px 28px;border-radius:24px;font-size:13px;z-index:400;pointer-events:none;animation:toastIn .3s ease;letter-spacing:1px;border:1px solid rgba(212,168,83,.2)}
-@keyframes toastIn{from{opacity:0;transform:translate(-50%,-50%) scale(.8)}}
+.pwd-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:320;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.pwd-overlay.show{display:flex}
+.pwd-overlay h3{color:var(--gold);letter-spacing:3px;font-size:18px}
+.pwd-overlay input{padding:12px 18px;border-radius:26px;border:1px solid rgba(212,168,83,.3);background:var(--dark3);color:var(--text);font-size:16px;text-align:center;outline:none;letter-spacing:4px;font-family:inherit;width:200px}
+.pwd-overlay button{padding:12px 40px;border-radius:26px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:700;font-size:15px;cursor:pointer;letter-spacing:2px;font-family:inherit}
+.pwd-overlay .cancel{background:transparent;border:none;color:var(--text2);font-size:13px;letter-spacing:1px;margin-top:8px}
+
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.9);color:var(--gold);padding:12px 28px;border-radius:24px;font-size:13px;z-index:400;pointer-events:none;letter-spacing:1px;border:1px solid rgba(212,168,83,.2)}
 .empty{text-align:center;padding:60px;color:var(--text2)}
 .empty .icon{font-size:48px;margin-bottom:10px}
-.bottom-nav{flex-shrink:0;position:sticky;bottom:0;z-index:40;background:rgba(13,13,13,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);display:flex;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom))}
-.bottom-nav .ni{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 0;cursor:pointer;color:var(--text2);transition:all .2s;font-size:10px;font-weight:500;gap:6px;letter-spacing:1px}
+.bottom-nav{flex-shrink:0;position:sticky;bottom:0;z-index:40;background:rgba(13,13,13,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);display:flex;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.bottom-nav .ni{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 0;cursor:pointer;color:var(--text2);font-size:10px;font-weight:500;gap:6px;letter-spacing:1px;-webkit-tap-highlight-color:transparent}
 .bottom-nav .ni .ni-icon{font-size:22px}
 .bottom-nav .ni.active{color:var(--gold)}
 .bottom-nav .ni .badge{position:absolute;top:0;right:50%;transform:translateX(22px);background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;padding:0 4px}
@@ -226,34 +160,40 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 <body>
 <div class="phone" id="app">
   <div class="navbar">
-    <span class="logo" onclick="logoClick()">酒 巷</span>
+    <span class="logo" id="logoBtn">酒 巷</span>
     <div class="spacer"></div>
-    <button class="nav-btn" onclick="toggleCart()">🛒<span class="badge" id="cartBadge">0</span></button>
-    <button class="nav-btn" onclick="navTo('orders')">📋</button>
+    <button class="nav-btn" id="cartNavBtn">🛒<span class="badge" id="cartBadge">0</span></button>
+    <button class="nav-btn" id="orderNavBtn">📋</button>
   </div>
-
-  <div class="page active" id="pg-home">
-    <div class="search-wrap"><div class="search-box"><span class="s-icon">🔍</span><input type="text" placeholder="搜索美酒..." oninput="renderHome(this.value)"></div></div>
+  <div class="page active" id="page-home">
+    <div class="search-wrap"><div class="search-box"><span class="s-icon">🔍</span><input type="text" placeholder="搜索美酒..." id="searchInput"></div></div>
     <div id="homeContent"></div>
   </div>
-  <div class="page" id="pg-checkout"><div style="padding-top:16px" id="chkContent"></div></div>
-  <div class="page" id="pg-orders"><div style="padding-top:16px" id="ordContent"></div></div>
-
+  <div class="page" id="page-checkout"><div style="padding-top:16px" id="checkoutContent"></div></div>
+  <div class="page" id="page-orders"><div style="padding-top:16px" id="ordersContent"></div></div>
   <div class="bottom-nav">
-    <div class="ni active" id="ni-home"><span class="ni-icon">🏠</span>首页</div>
-    <div class="ni" id="ni-orders"><span class="ni-icon">📋</span>订单</div>
-    <div class="ni" id="ni-cart" onclick="toggleCart()"><span class="ni-icon">🛒</span>购物车<span class="badge" id="niCartBadge">0</span></div>
-    <div class="ni" id="ni-admin" onclick="showAdminLogin()"><span class="ni-icon">⚙️</span>管理</div>
+    <div class="ni active" id="nav-home"><span class="ni-icon">🏠</span>首页</div>
+    <div class="ni" id="nav-orders"><span class="ni-icon">📋</span>订单</div>
+    <div class="ni" id="nav-cart"><span class="ni-icon">🛒</span>购物车<span class="badge" id="niCartBadge">0</span></div>
+    <div class="ni" id="nav-admin"><span class="ni-icon">⚙️</span>管理</div>
   </div>
 </div>
 
-<div class="modal-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()"></div>
-<div class="cart-overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><div class="cart-drawer" id="cartDrawer"></div></div>
+<div class="modal-overlay" id="detailOverlay"><div id="detailContent"></div></div>
+<div class="cart-overlay" id="cartOverlay"><div class="cart-drawer" id="cartDrawer"></div></div>
 <div class="admin-overlay" id="adminOverlay"><div id="adminContent"></div></div>
-<div class="admin-pwd" id="adminPwd" style="display:none"><h3>管理员登录</h3><input type="password" id="pwdInput" placeholder="输入密码" onkeydown="if(event.key==='Enter')checkPwd()"><button onclick="checkPwd()">进入后台</button><button style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:13px;letter-spacing:1px;margin-top:8px" onclick="document.getElementById('adminPwd').style.display='none';document.getElementById('adminOverlay').classList.remove('open')">取消</button></div>
+<div class="pwd-overlay" id="pwdOverlay">
+  <h3>🔐 管理员登录</h3>
+  <input type="password" id="pwdInput" placeholder="输入密码">
+  <button id="pwdConfirm">进入后台</button>
+  <button class="cancel" id="pwdCancel">取消</button>
+</div>
 
 <script>
-// ============ 产品数据 ============
+(function(){
+'use strict';
+
+// ============ 数据 ============
 var products = [
   {id:1,name:'飞天茅台 53度 酱香型 500ml',cat:'白酒',price:799,orig:1499,alc:'53%',vol:'500ml',tag:'爆款',b:'maotai',brand:'茅台',btype:'飞天',bcolor:'#c41e2a',btext:'#ffd700',rank:4.9,sales:8600,desc:'茅台镇核心产区，12987传统工艺酿造。酒体微黄透明，酱香突出，幽雅细腻，回味悠长。官方价¥1499，本店¥799。'},
   {id:2,name:'五粮液 第八代普五 52度 浓香型 500ml',cat:'白酒',price:729,orig:1399,alc:'52%',vol:'500ml',tag:'热卖',b:'wuliangye',brand:'五粮液',btype:'普五',bcolor:'#d4213d',btext:'#ffd700',rank:4.8,sales:12000,desc:'五粮酿造：高粱、大米、糯米、小麦、玉米。陈年老窖发酵，香气悠久，入口甘美。官方价¥1399，本店¥729。'},
@@ -266,128 +206,186 @@ var products = [
   {id:9,name:'青岛啤酒经典1903 500ml×12罐',cat:'啤酒',price:36,orig:69,alc:'4.3%',vol:'500ml×12',tag:'囤货',b:'beer',brand:'青岛',btype:'经典1903',bcolor:'#1a6e1a',btext:'#fff',rank:4.8,sales:50000,desc:'百年酵母，百年工艺。麦香浓郁，口感醇厚，国货经典。官方价¥69，本店¥36。'},
   {id:10,name:'獭祭 纯米大吟酿45 山田锦 720ml',cat:'清酒',price:189,orig:358,alc:'16%',vol:'720ml',tag:'日本',b:'sake',brand:'獭祭',btype:'大吟酿45',bcolor:'#1a1a2e',btext:'#fff',rank:4.9,sales:4500,desc:'山口县旭酒造，精米步合45%。蜜瓜与白桃果香，口感清澈，世界级清酒。'},
   {id:11,name:'麦卡伦12年 雪莉桶单一麦芽 700ml',cat:'洋酒',price:319,orig:628,alc:'40%',vol:'700ml',tag:'经典',b:'spirit',brand:'Macallan',btype:'12年雪莉',bcolor:'#8b4513',btext:'#1a1a1a',rank:4.9,sales:15000,desc:'苏格兰斯佩塞，纯雪莉桶熟成。干果、巧克力、香料风味。官方价¥628，本店¥319。'},
-  {id:12,name:'酒巷甄选 双支礼品酒礼盒',cat:'礼盒',price:368,orig:688,alc:'52%',vol:'500ml×2',tag:'送礼',b:'gift',brand:'酒巷',btype:'甄选礼盒',bcolor:'#ffd700',btext:'#ffd700',rank:4.9,sales:6200,desc:'精选两款名酒配搭，金色礼盒包装。配赠手提袋，送长辈送客户面面俱到。'},
+  {id:12,name:'酒巷甄选 双支礼品酒礼盒',cat:'礼盒',price:368,orig:688,alc:'52%',vol:'500ml×2',tag:'送礼',b:'gift',brand:'酒巷',btype:'甄选礼盒',bcolor:'#ffd700',btext:'#ffd700',rank:4.9,sales:6200,desc:'精选两款名酒配搭，金色礼盒包装。配赠手提袋，送长辈送客户面面俱到。'}
 ];
 
-// ============ 状态 ============
-var cart=[],currentCat='全部',currentFilter='',pageHistory=['home'];
-var paymentMethod='wechat',paymentProofData=null;
-var adminPassword='admin888';
-var ghToken='';
-var ghRepo='Xfw939/jiuxiang';
-var giteeToken='';
-var giteeRepo='xiong-fuwei/jiuxiang';
+var cart=[],currentCat='全部',currentFilter='',paymentMethod='wechat',paymentProofData=null;
+var adminPassword='admin888',ghToken='',giteeToken='';
 var settings={wechatQr:'',alipayQr:'',shopName:'酒巷精选',contactPhone:''};
 
-// ============ 数据持久化 ============
-function loadProducts(){try{var d=JSON.parse(localStorage.getItem('jxp_products'));if(d&&d.length)products=d;return!!d}catch(e){return false}}
-function saveProducts(){localStorage.setItem('jxp_products',JSON.stringify(products))}
-function loadSettings(){try{var s=JSON.parse(localStorage.getItem('jxp_settings'));if(s)settings=s}catch(e){}}
-function saveSettings(){localStorage.setItem('jxp_settings',JSON.stringify(settings))}
-function loadTokens(){try{var t=JSON.parse(localStorage.getItem('jxp_tokens'));if(t){if(t.ghToken)ghToken=t.ghToken;if(t.giteeToken)giteeToken=t.giteeToken;if(t.adminPassword)adminPassword=t.adminPassword}}catch(e){}}
-function saveTokens(){localStorage.setItem('jxp_tokens',JSON.stringify({ghToken:ghToken,giteeToken:giteeToken,adminPassword:adminPassword}))}
-function getOrders(){try{return JSON.parse(localStorage.getItem('jxp_orders'))||[]}catch(e){return[]}}
-function saveOrders(o){localStorage.setItem('jxp_orders',JSON.stringify(o))}
-
-// ============ 导航 ============
-function navTo(pg){
-  pageHistory.push(pg);
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
-  var el=document.getElementById('pg-'+pg);if(el)el.classList.add('active');
-  document.querySelectorAll('.bottom-nav .ni').forEach(function(n){n.classList.remove('active')});
-  var m={home:'ni-home',orders:'ni-orders'};var a=m[pg];if(a)document.getElementById(a).classList.add('active');
-  if(pg==='checkout')renderCheckout();
-  if(pg==='orders')renderOrders();
-  if(pg==='home'){renderHome();document.getElementById('pg-home').scrollIntoView()}
+// ============ 本地存储 ============
+function loadAll(){
+  try{var d=JSON.parse(localStorage.getItem('jxp_products'));if(d&&d.length)products=d}catch(e){}
+  try{var s=JSON.parse(localStorage.getItem('jxp_settings'));if(s){settings.wechatQr=s.wechatQr||'';settings.alipayQr=s.alipayQr||'';settings.shopName=s.shopName||'酒巷精选'}}catch(e){}
+  try{var t=JSON.parse(localStorage.getItem('jxp_tokens'));if(t){if(t.ghToken)ghToken=t.ghToken;if(t.giteeToken)giteeToken=t.giteeToken;if(t.adminPassword)adminPassword=t.adminPassword}}catch(e){}
 }
-function goBack(){if(pageHistory.length<=1)return;pageHistory.pop();var p=pageHistory.pop();navTo(p)}
+function saveProducts(){try{localStorage.setItem('jxp_products',JSON.stringify(products))}catch(e){}}
+function saveSettings(){try{localStorage.setItem('jxp_settings',JSON.stringify(settings))}catch(e){}}
+function saveTokens(){try{localStorage.setItem('jxp_tokens',JSON.stringify({ghToken:ghToken,giteeToken:giteeToken,adminPassword:adminPassword}))}catch(e){}}
+function getOrders(){try{return JSON.parse(localStorage.getItem('jxp_orders'))||[]}catch(e){return[]}}
+function saveOrders(o){try{localStorage.setItem('jxp_orders',JSON.stringify(o))}catch(e){}}
 
-// ============ 渲染工具 ============
-function renderBottle(p,lg){
-  var cls='b-wrap b-'+p.b+(lg?' large':'');
-  var cs='',ls='';
-  if(p.b==='beer'){cs='background:'+p.bcolor;ls='background:'+p.bcolor+';color:'+(p.btext||'#fff')}
-  else if(p.b==='gift'){cs='background:linear-gradient(180deg,#ffd700,#c8a020)';ls='background:rgba(0,0,0,.4);color:#ffd700'}
-  return '<div class="'+cls+'"><div class="b-cap" style="'+cs+'"></div><div class="b-neck"></div><div class="b-body"><div class="b-label" style="'+ls+'"><span class="bl-b" style="color:'+(p.btext||'')+'">'+escHtml(p.brand)+'</span><span class="bl-t">'+escHtml(p.btype)+'</span><span class="bl-a">'+p.alc+'</span></div></div></div>'
+// ============ 工具 ============
+function escH(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function escA(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmtN(n){return n>=10000?(n/10000).toFixed(1)+'万':n}
+function toast(msg){
+  var t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.getElementById('app').appendChild(t);
+  setTimeout(function(){t.remove()},1800)
+}
+
+// ============ 瓶身渲染 ============
+function bottleHTML(p){
+  var cap='',label='',h='<div class="b-wrap">';
+  if(p.b==='beer'){cap='background:'+p.bcolor;label='background:'+p.bcolor+';color:'+(p.btext||'#fff')}
+  else if(p.b==='gift'){cap='background:linear-gradient(180deg,#ffd700,#c8a020)';label='background:rgba(0,0,0,.4);color:#ffd700'}
+  h+='<div class="b-cap" style="'+cap+'"></div><div class="b-neck"></div><div class="b-body"><div class="b-label" style="'+label+'">';
+  h+='<span class="bl-b" style="color:'+(p.btext||'')+'">'+escH(p.brand)+'</span>';
+  h+='<span class="bl-t">'+escH(p.btype)+'</span><span class="bl-a">'+p.alc+'</span>';
+  h+='</div></div></div>';return h
 }
 function bottleBg(p){
   var m={maotai:'linear-gradient(135deg,#1a1208,#2d1f0e)',wuliangye:'linear-gradient(135deg,#141218,#221a28)',jiannanchun:'linear-gradient(135deg,#101420,#1a1e2a)',langjiu:'linear-gradient(135deg,#1a0a0a,#2d1010)',wine:'linear-gradient(135deg,#0a1008,#0d1a10)',spirit:'linear-gradient(135deg,#100c04,#1a1408)',beer:'linear-gradient(135deg,#0a1004,#141a08)',sake:'linear-gradient(135deg,#0c0c14,#141022)',gift:'linear-gradient(135deg,#100804,#1a0c04)'};
   return m[p.b]||'linear-gradient(135deg,#111,#1a1a1a)'
 }
 
-// ============ 首页 ============
+// ============ 商品卡片 ============
+function cardHTML(p){
+  return '<div class="card" data-id="'+p.id+'"><div class="img" style="background:'+bottleBg(p)+'">'
+    +bottleHTML(p)+(p.tag?'<span class="tag">'+p.tag+'</span>':'')
+    +'</div><div class="info"><div class="name">'+escH(p.name)+'</div>'
+    +'<div class="meta">'+p.alc+' · '+p.vol+' · 已售'+fmtN(p.sales)+'</div>'
+    +'<div class="price-row"><span class="price">¥'+p.price+'</span>'
+    +'<button class="add-btn" data-add="'+p.id+'">+</button></div></div></div>';
+}
+
+// ============ 渲染首页 ============
 function renderHome(filter){
   if(filter!==undefined)currentFilter=filter;
-  var list=getFiltered();
+  var list=products.filter(function(p){
+    if(currentCat!=='全部'&&p.cat!==currentCat)return false;
+    if(currentFilter&&p.name.indexOf(currentFilter)===-1&&p.cat.indexOf(currentFilter)===-1)return false;
+    return true
+  });
   var cats=['全部','白酒','红酒','啤酒','洋酒','清酒','礼盒'];
   var hotIds=[1,2,3,6,8,9,10,12],hot=products.filter(function(p){return hotIds.indexOf(p.id)!==-1});
   var h='<div class="hero"><div class="hero-text"><h2>陈年佳酿<br>岁月留香</h2><p>精选全球好酒 · 官网半价 · 正品保障</p></div></div>';
-  h+='<div class="cats">';
-  cats.forEach(function(c){h+='<div class="cat-chip'+(c===currentCat?' active':'')+'" onclick="switchCat(\''+c+'\')">'+(c==='全部'?'🔥 全部':c)+'</div>'});
+  h+='<div class="cats" id="catBar">';
+  cats.forEach(function(c){h+='<div class="cat-chip'+(c===currentCat?' active':'')+'" data-cat="'+c+'">'+(c==='全部'?'🔥 全部':c)+'</div>'});
   h+='</div>';
-  if(currentCat==='全部'&&!currentFilter){h+='<div class="sec-title">🔥 热销推荐</div><div class="grid">';hot.forEach(function(p){h+=card(p)});h+='</div><div class="sec-title">📦 全部美酒</div>'}
+  if(currentCat==='全部'&&!currentFilter){h+='<div class="sec-title">🔥 热销推荐</div><div class="grid" id="hotGrid"></div><div class="sec-title">📦 全部美酒</div>'}
   if(list.length===0)h+='<div class="empty"><div class="icon">🍷</div>未找到商品</div>';
-  else{h+='<div class="grid">';list.forEach(function(p){h+=card(p)});h+='</div>'}
+  else{h+='<div class="grid" id="prodGrid"></div>'}
   h+='<div style="text-align:center;padding:30px 20px;color:var(--text2);font-size:12px;letter-spacing:2px">— 美酒虽好 请勿贪杯 —</div>';
-  document.getElementById('homeContent').innerHTML=h
+  document.getElementById('homeContent').innerHTML=h;
+  // 绑定事件
+  if(currentCat==='全部'&&!currentFilter){
+    var g1=document.getElementById('hotGrid');if(g1)hot.forEach(function(p){g1.innerHTML+=cardHTML(p)})
+  }
+  var g2=document.getElementById('prodGrid');if(g2)list.forEach(function(p){g2.innerHTML+=cardHTML(p)})
+  bindCardEvents()
 }
-function getFiltered(){return products.filter(function(p){if(currentCat!=='全部'&&p.cat!==currentCat)return false;if(currentFilter&&p.name.indexOf(currentFilter)===-1&&p.cat.indexOf(currentFilter)===-1)return false;return true})}
-function switchCat(cat){currentCat=cat;renderHome()}
-function card(p){
-  return '<div class="card" onclick="openDetail('+p.id+')"><div class="img" style="background:'+bottleBg(p)+'">'+renderBottle(p,false)+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div><div class="info"><div class="name">'+escHtml(p.name)+'</div><div class="meta">'+p.alc+' · '+p.vol+' · 已售'+fmtNum(p.sales)+'</div><div class="price-row"><span class="price">¥'+p.price+'</span><button class="add-btn" onclick="event.stopPropagation();addToCart('+p.id+')">+</button></div></div></div>'
+function bindCardEvents(){
+  // 分类点击
+  var chips=document.querySelectorAll('.cat-chip');
+  for(var i=0;i<chips.length;i++){(function(c){c.onclick=function(){currentCat=c.getAttribute('data-cat');renderHome()}})(chips[i])}
+  // 卡片点击
+  var cards=document.querySelectorAll('.card');
+  for(var j=0;j<cards.length;j++){(function(c){c.onclick=function(){openDetail(parseInt(c.getAttribute('data-id')))}})(cards[j])}
+  // 加购按钮
+  var btns=document.querySelectorAll('.add-btn');
+  for(var k=0;k<btns.length;k++){(function(b){b.onclick=function(e){e.stopPropagation();addToCart(parseInt(b.getAttribute('data-add')))}})(btns[k])}
 }
 
-// ============ 详情 ============
+// ============ 详情弹窗 ============
 function openDetail(id){
   var p=products.find(function(p){return p.id===id});if(!p)return;
   var ov=document.getElementById('detailOverlay');
-  ov.innerHTML='<div class="modal"><div class="d-img" style="background:'+bottleBg(p)+'"><button class="close" onclick="closeDetail()">✕</button>'+renderBottleLarge(p)+'</div><div class="d-body"><div class="d-name">'+escHtml(p.name)+'</div><div class="d-meta">'+p.alc+' · '+p.vol+' · 评分 '+p.rank+' · 已售 '+fmtNum(p.sales)+'</div><div class="d-price">¥'+p.price+'</div>'+(p.orig>p.price?'<div class="d-orig">官网价 ¥'+p.orig+'</div>':'')+'<div class="d-desc">'+p.desc+'</div><div class="d-actions"><button class="btn btn-out" onclick="addToCart('+p.id+');closeDetail()">🛒 加入购物车</button><button class="btn btn-gold" onclick="addToCart('+p.id+');closeDetail();buyNow()">⚡ 立即购买</button></div></div></div>';
-  ov.classList.add('open')
+  var h='<div class="modal"><div class="d-img" style="background:'+bottleBg(p)+'"><button class="d-close" id="dClose">✕</button><div style="transform:scale(1.5)">'+bottleHTML(p)+'</div></div>';
+  h+='<div class="d-body"><div class="d-name">'+escH(p.name)+'</div><div class="d-meta">'+p.alc+' · '+p.vol+' · 评分 '+p.rank+' · 已售 '+fmtN(p.sales)+'</div>';
+  h+='<div class="d-price">¥'+p.price+'</div>'+(p.orig>p.price?'<div class="d-orig">官网价 ¥'+p.orig+'</div>':'');
+  h+='<div class="d-desc">'+p.desc+'</div><div class="d-actions">';
+  h+='<button class="btn btn-out" id="dCart">🛒 加入购物车</button><button class="btn btn-gold" id="dBuy">⚡ 立即购买</button></div></div></div>';
+  document.getElementById('detailContent').innerHTML=h;
+  ov.classList.add('show');
+  document.getElementById('dClose').onclick=closeDetail;
+  document.getElementById('dCart').onclick=function(){addToCart(p.id);closeDetail()};
+  document.getElementById('dBuy').onclick=function(){addToCart(p.id);closeDetail();goCheckout()};
+  ov.onclick=function(e){if(e.target===ov)closeDetail()}
 }
-function renderBottleLarge(p){return '<div style="transform:scale(1.55);transform-origin:center center">'+renderBottle(p,false)+'</div>'}
-function closeDetail(){document.getElementById('detailOverlay').classList.remove('open')}
+function closeDetail(){document.getElementById('detailOverlay').classList.remove('show');document.getElementById('detailContent').innerHTML=''}
 
 // ============ 购物车 ============
-function addToCart(id){var e=cart.find(function(c){return c.id===id});if(e)e.qty++;else{var p=products.find(function(p){return p.id===id});if(p)cart.push({id:p.id,name:p.name,price:p.price,b:p.b,brand:p.brand,btype:p.btype,bcolor:p.bcolor,btext:p.btext,alc:p.alc,qty:1})}updateCartBadge();toast('已加入购物车')}
-function removeFromCart(id){cart=cart.filter(function(c){return c.id!==id});updateCartBadge();renderCart()}
-function changeQty(id,d){var it=cart.find(function(c){return c.id===id});if(!it)return;it.qty+=d;if(it.qty<=0){removeFromCart(id);return}updateCartBadge();renderCart()}
-function updateCartBadge(){var n=cart.reduce(function(s,c){return s+c.qty},0);['cartBadge','niCartBadge'].forEach(function(id){var b=document.getElementById(id);if(b){b.textContent=n;b.style.display=n>0?'flex':'none'}})}
-function toggleCart(){openCart()}
-function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('open')}
-function closeCart(){document.getElementById('cartOverlay').classList.remove('open')}
-function renderCart(){
-  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);
-  var h='<div class="cart-head"><span>🛒 购物车 ('+cart.length+'件)</span><button onclick="closeCart()">✕</button></div><div class="cart-items">';
-  if(cart.length===0)h+='<div class="empty"><div class="icon">🛒</div>空的</div>';
-  else cart.forEach(function(c){h+='<div class="cart-item"><div class="ci-img">'+renderBottle(c,false)+'</div><div class="ci-info"><div class="ci-name">'+escHtml(c.name)+'</div><div class="ci-price">¥'+(c.price*c.qty)+'</div></div><div class="qty-ctrl"><button onclick="changeQty('+c.id+',-1)">-</button><span>'+c.qty+'</span><button onclick="changeQty('+c.id+',1)">+</button></div></div>'});
-  h+='</div><div class="cart-foot"><div class="total"><span>合计</span><span class="amt">¥'+t+'</span></div><button class="btn btn-gold" style="width:100%" onclick="closeCart();goCheckout()"'+(cart.length===0?' disabled':'')+'>去结算</button></div>';
-  document.getElementById('cartDrawer').innerHTML=h
+function addToCart(id){
+  var e=cart.find(function(c){return c.id===id});
+  if(e)e.qty++;else{var p=products.find(function(p){return p.id===id});if(p)cart.push({id:p.id,name:p.name,price:p.price,b:p.b,brand:p.brand,btype:p.btype,bcolor:p.bcolor,btext:p.btext,alc:p.alc,qty:1})}
+  updateBadge();toast('已加入购物车')
 }
-function buyNow(){closeDetail();goCheckout()}
+function removeFromCart(id){cart=cart.filter(function(c){return c.id!==id});updateBadge();renderCart()}
+function changeQty(id,d){var it=cart.find(function(c){return c.id===id});if(!it)return;it.qty+=d;if(it.qty<=0){removeFromCart(id);return}updateBadge();renderCart()}
+function updateBadge(){
+  var n=cart.reduce(function(s,c){return s+c.qty},0);
+  var b1=document.getElementById('cartBadge'),b2=document.getElementById('niCartBadge');
+  if(b1){b1.textContent=n;b1.style.display=n>0?'flex':'none'}
+  if(b2){b2.textContent=n;b2.style.display=n>0?'flex':'none'}
+}
+function renderCart(){
+  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0),h='';
+  h='<div class="cart-head"><span>🛒 购物车 ('+cart.length+'件)</span><button id="cartCloseBtn">✕</button></div><div class="cart-items">';
+  if(cart.length===0)h+='<div class="empty"><div class="icon">🛒</div>空的</div>';
+  else cart.forEach(function(c){h+='<div class="cart-item"><div class="ci-img">'+bottleHTML(c)+'</div><div class="ci-info"><div class="ci-name">'+escH(c.name)+'</div><div class="ci-price">¥'+(c.price*c.qty)+'</div></div><div class="qty-ctrl"><button data-qdec="'+c.id+'">-</button><span>'+c.qty+'</span><button data-qinc="'+c.id+'">+</button></div></div>'});
+  h+='</div><div class="cart-foot"><div class="total"><span>合计</span><span class="amt">¥'+t+'</span></div><button class="btn btn-gold" style="width:100%" id="cartCheckout"'+ (cart.length===0?' disabled':'')+'>去结算</button></div>';
+  document.getElementById('cartDrawer').innerHTML=h;
+  // bind
+  var cb=document.getElementById('cartCloseBtn');if(cb)cb.onclick=closeCart;
+  var ck=document.getElementById('cartCheckout');if(ck)ck.onclick=function(){closeCart();goCheckout()};
+  var decs=document.querySelectorAll('[data-qdec]');for(var i=0;i<decs.length;i++){(function(b){b.onclick=function(){changeQty(parseInt(b.getAttribute('data-qdec')),-1)}})(decs[i])}
+  var incs=document.querySelectorAll('[data-qinc]');for(var j=0;j<incs.length;j++){(function(b){b.onclick=function(){changeQty(parseInt(b.getAttribute('data-qinc')),1)}})(incs[j])}
+}
+function toggleCart(){var ov=document.getElementById('cartOverlay');if(ov.classList.contains('show'))closeCart();else{renderCart();ov.classList.add('show');ov.onclick=function(e){if(e.target===ov)closeCart()}}}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('show')}
 function goCheckout(){if(cart.length===0){toast('空的');return}navTo('checkout')}
+
+// ============ 导航 ============
+function navTo(pg){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.getElementById('page-'+pg).classList.add('active');
+  document.querySelectorAll('.bottom-nav .ni').forEach(function(n){n.classList.remove('active')});
+  var m={home:'nav-home',orders:'nav-orders'};if(m[pg])document.getElementById(m[pg]).classList.add('active');
+  if(pg==='checkout')renderCheckout();
+  if(pg==='orders')renderOrders();
+}
 
 // ============ 结算 ============
 function renderCheckout(){
   if(cart.length===0){navTo('home');return}
-  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);loadSettings();paymentProofData=null;paymentMethod='wechat';
+  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+  paymentProofData=null;paymentMethod='wechat';
   var h='<div class="chk-sec"><div class="chk-label">📍 收货信息</div><input class="chk-input" id="chkName" placeholder="收货人姓名"><input class="chk-input" id="chkPhone" placeholder="手机号码"><textarea class="chk-input" id="chkAddr" placeholder="详细地址" rows="2" style="resize:none"></textarea></div>';
   h+='<div class="chk-sec"><div class="chk-label">📦 商品</div>';
-  cart.forEach(function(c){h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;color:var(--text)"><span style="flex:1">'+escHtml(c.name)+'</span><span>×'+c.qty+'</span><span style="color:var(--gold);font-weight:600">¥'+(c.price*c.qty)+'</span></div>'});
+  cart.forEach(function(c){h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;color:var(--text)"><span style="flex:1">'+escH(c.name)+'</span><span>×'+c.qty+'</span><span style="color:var(--gold);font-weight:600">¥'+(c.price*c.qty)+'</span></div>'});
   h+='<div style="text-align:right;padding-top:10px;font-size:20px;font-weight:900;color:var(--gold)">合计 ¥'+t+'</div></div>';
-  h+='<div class="chk-sec"><div class="chk-label">💳 支付</div><div class="pay-opt active" onclick="selPay(\'wechat\')" id="pay-wechat"><div class="pay-dot"></div><span class="pay-label">💚 微信支付</span></div><div class="pay-opt" onclick="selPay(\'alipay\')" id="pay-alipay"><div class="pay-dot"></div><span class="pay-label">💙 支付宝</span></div></div>';
+  h+='<div class="chk-sec"><div class="chk-label">💳 支付</div><div class="pay-opt sel" id="pay-wx"><div class="pay-dot"></div><span class="pay-label">💚 微信支付</span></div><div class="pay-opt" id="pay-ali"><div class="pay-dot"></div><span class="pay-label">💙 支付宝</span></div></div>';
   h+='<div class="chk-sec"><div class="qr-wrap"><div class="qr-amt">请支付 ¥'+t+'</div><div class="qr-box" id="qrBox">';
-  var qr=paymentMethod==='wechat'?settings.wechatQr:settings.alipayQr;
+  var qr=settings.wechatQr;
   h+=qr?'<img src="'+qr+'" alt="付款码">':'<div style="color:var(--text2);font-size:12px;text-align:center;line-height:1.8">尚未设置收款码<br>联系客服获取</div>';
-  h+='</div><div class="qr-hint">使用'+(paymentMethod==='wechat'?'微信':'支付宝')+'扫码付款</div><div class="upload-zone" onclick="document.getElementById(\'proofInput\').click()"><img id="proofPreview"><div class="up-text" id="upText">📎 点击上传付款截图</div></div><input type="file" id="proofInput" accept="image/*" style="display:none" onchange="handleProof(event)"></div></div>';
-  h+='<div style="padding:0 16px 30px"><button class="btn btn-gold" style="width:100%" onclick="submitOrder()">确认下单</button></div>';
-  document.getElementById('chkContent').innerHTML=h;
+  h+='</div><div class="qr-hint">使用微信扫码付款</div><div class="upload-zone" id="uploadZone"><img id="proofPreview"><div class="up-text" id="upText">📎 点击上传付款截图</div></div><input type="file" id="proofInput" accept="image/*" style="display:none"></div></div>';
+  h+='<div style="padding:0 16px 30px"><button class="btn btn-gold" style="width:100%" id="submitOrderBtn">确认下单</button></div>';
+  document.getElementById('checkoutContent').innerHTML=h;
   var a={};try{a=JSON.parse(localStorage.getItem('jxp_addr'))||{}}catch(e){}
-  document.getElementById('chkName').value=a.name||'';document.getElementById('chkPhone').value=a.phone||'';document.getElementById('chkAddr').value=a.addr||''
+  document.getElementById('chkName').value=a.name||'';document.getElementById('chkPhone').value=a.phone||'';document.getElementById('chkAddr').value=a.addr||'';
+  // bind
+  document.getElementById('pay-wx').onclick=function(){selPay('wechat')};
+  document.getElementById('pay-ali').onclick=function(){selPay('alipay')};
+  document.getElementById('uploadZone').onclick=function(){document.getElementById('proofInput').click()};
+  document.getElementById('proofInput').onchange=handleProof;
+  document.getElementById('submitOrderBtn').onclick=submitOrder
 }
 function selPay(m){
-  paymentMethod=m;document.querySelectorAll('.pay-opt').forEach(function(o){o.classList.remove('active')});document.getElementById('pay-'+m).classList.add('active');
-  var q=paymentMethod==='wechat'?settings.wechatQr:settings.alipayQr;
-  var qb=document.getElementById('qrBox');if(qb)qb.innerHTML=q?'<img src="'+q+'">':'<div style="color:var(--text2);font-size:12px;text-align:center;line-height:1.8">尚未设置收款码</div>';
+  paymentMethod=m;document.getElementById('pay-wx').classList.toggle('sel',m==='wechat');document.getElementById('pay-ali').classList.toggle('sel',m==='alipay');
+  var qr=m==='wechat'?settings.wechatQr:settings.alipayQr;
+  document.getElementById('qrBox').innerHTML=qr?'<img src="'+qr+'">':'<div style="color:var(--text2);font-size:12px;text-align:center;line-height:1.8">尚未设置收款码</div>';
   document.getElementById('proofPreview').style.display='none';document.getElementById('upText').style.display='';paymentProofData=null
 }
 function handleProof(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){paymentProofData=ev.target.result;var pv=document.getElementById('proofPreview');pv.src=paymentProofData;pv.style.display='block';document.getElementById('upText').style.display='none'};r.readAsDataURL(f)}
@@ -397,7 +395,7 @@ function submitOrder(){
   localStorage.setItem('jxp_addr',JSON.stringify({name:n,phone:p,addr:a}));
   var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);
   var o={id:'JX'+Date.now().toString(36).toUpperCase(),items:JSON.parse(JSON.stringify(cart)),total:t,paymentMethod:paymentMethod,paymentProof:paymentProofData,address:{name:n,phone:p,addr:a},status:'pending',createdAt:new Date().toISOString()};
-  var ord=getOrders();ord.unshift(o);saveOrders(ord);cart=[];updateCartBadge();toast('下单成功');navTo('orders')
+  var ord=getOrders();ord.unshift(o);saveOrders(ord);cart=[];updateBadge();toast('下单成功');navTo('orders')
 }
 
 // ============ 订单 ============
@@ -406,113 +404,124 @@ function renderOrders(){
   if(ord.length===0)h='<div class="empty"><div class="icon">📋</div>暂无订单</div>';
   else ord.forEach(function(o,i){
     var st={pending:'待确认',paid:'已付款',shipped:'已发货'};
-    h+='<div class="order-card"><div class="oc-head"><span class="oc-id">'+o.id+'</span><span class="oc-status '+o.status+'">'+(st[o.status]||o.status)+'</span></div>';
-    h+='<div class="oc-products">'+o.items.map(function(it){return escHtml(it.name)+' ×'+it.qty}).join('<br>')+'</div><div class="oc-total">¥'+o.total+'</div>';
+    h+='<div class="order-card"><div class="oc-head"><span class="oc-id">'+o.id+'</span><span class="oc-st '+o.status+'">'+(st[o.status]||o.status)+'</span></div>';
+    h+='<div class="oc-prods">'+o.items.map(function(it){return escH(it.name)+' ×'+it.qty}).join('<br>')+'</div><div class="oc-total">¥'+o.total+'</div>';
     h+='<div style="font-size:11px;color:var(--text2);margin-top:4px">'+new Date(o.createdAt).toLocaleString('zh-CN')+'</div>';
     if(o.paymentProof)h+='<div style="margin-top:8px"><img src="'+o.paymentProof+'" style="width:80px;border-radius:6px" onclick="window.open(this.src)"></div>';
-    h+=o.status==='pending'?'<div class="oc-actions"><button class="btn-sm gold" onclick="markPaid('+i+')">标记已付款</button><button class="btn-sm ghost" onclick="delOrder('+i+')">删除</button></div>':o.status==='paid'?'<div class="oc-actions"><button class="btn-sm gold" onclick="markShipped('+i+')">标记已发货</button></div>':'';
+    h+=o.status==='pending'?'<div class="oc-actions"><button class="btn-sm gold" data-paid="'+i+'">标记已付款</button><button class="btn-sm ghost" data-del="'+i+'">删除</button></div>':(o.status==='paid'?'<div class="oc-actions"><button class="btn-sm gold" data-ship="'+i+'">标记已发货</button></div>':'');
     h+='</div>'
   });
-  document.getElementById('ordContent').innerHTML=h
+  document.getElementById('ordersContent').innerHTML=h;
+  // bind orders
+  var pbs=document.querySelectorAll('[data-paid]');for(var i=0;i<pbs.length;i++){(function(b){b.onclick=function(){markPaid(parseInt(b.getAttribute('data-paid')))}})(pbs[i])}
+  var sbs=document.querySelectorAll('[data-ship]');for(var j=0;j<sbs.length;j++){(function(b){b.onclick=function(){markShipped(parseInt(b.getAttribute('data-ship')))}})(sbs[j])}
+  var dbs=document.querySelectorAll('[data-del]');for(var k=0;k<dbs.length;k++){(function(b){b.onclick=function(){delOrder(parseInt(b.getAttribute('data-del')))}})(dbs[k])}
 }
-function markPaid(i){updateOrd(i,'paid')}function markShipped(i){updateOrd(i,'shipped')}
+function markPaid(i){updateOrd(i,'paid')}
+function markShipped(i){updateOrd(i,'shipped')}
 function delOrder(i){if(!confirm('删除?'))return;var o=getOrders();o.splice(i,1);saveOrders(o);renderOrders()}
 function updateOrd(i,s){var o=getOrders();if(i>=0&&i<o.length){o[i].status=s;saveOrders(o);renderOrders();toast('已更新')}}
 
 // ============ 管理后台 ============
-var logoClicks=0,logoTimeout;
-function logoClick(){logoClicks++;clearTimeout(logoTimeout);if(logoClicks>=5){logoClicks=0;showAdminLogin()}logoTimeout=setTimeout(function(){logoClicks=0},1500)}
-function showAdminLogin(){document.getElementById('adminPwd').style.display='flex';document.getElementById('adminOverlay').classList.add('open');document.getElementById('pwdInput').value='';setTimeout(function(){document.getElementById('pwdInput').focus()},300)}
-function checkPwd(){if(document.getElementById('pwdInput').value===adminPassword){document.getElementById('adminPwd').style.display='none';renderAdmin()}else toast('密码错误')}
-
-function renderAdmin(){
-  var h='<div class="admin-panel"><div class="admin-head"><h3>⚙️ 管理后台</h3><button onclick="closeAdmin()">✕</button></div><div class="admin-body">';
-  h+='<div style="display:flex;gap:8px;margin-bottom:16px"><button class="btn-sm gold" onclick="addNewProduct()">+ 添加商品</button><button class="btn-sm ghost" onclick="syncToGitHub()">📤 同步到服务器</button><button class="btn-sm ghost" onclick="exportData()">📥 导出数据</button></div>';
-  h+='<div style="margin-bottom:14px"><div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">🔑 修改管理员密码</div><input class="chk-input" id="newPwd" placeholder="新密码" style="margin-bottom:6px"><button class="btn-sm gold" onclick="changePwd()">修改密码</button></div>';
-  h+='<div style="margin-bottom:14px"><div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">🔐 API 令牌（同步到服务器需要）</div><input class="chk-input" id="admGhToken" value="'+escAttr(ghToken)+'" placeholder="GitHub Token (ghp_...)" type="password"><input class="chk-input" id="admGiteeToken" value="'+escAttr(giteeToken)+'" placeholder="Gitee Token" type="password"><button class="btn-sm gold" onclick="saveTokens_ui()">保存令牌</button></div>';
-  h+='<div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:10px">📦 商品列表 ('+products.length+'件)</div>';
-  products.forEach(function(p,i){
-    h+='<div style="background:var(--dark3);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.04)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="color:var(--text);font-weight:600;font-size:13px">#'+p.id+' '+escHtml(p.name).substring(0,20)+'...</span><span style="color:var(--gold);font-weight:700">¥'+p.price+'</span></div>';
-    h+='<div style="display:flex;gap:6px"><button class="btn-sm ghost" style="font-size:11px" onclick="editProduct('+i+')">✎ 编辑</button><button class="btn-sm ghost" style="font-size:11px" onclick="dupProduct('+i+')">⧉ 复制</button><button class="btn-sm ghost" style="font-size:11px;color:var(--red)" onclick="delProduct('+i+')">✕ 删除</button></div></div>'
-  });
-  h+='<div style="margin-top:16px"><div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">💳 收款码设置</div><input class="chk-input" id="admWxQr" value="'+escAttr(settings.wechatQr)+'" placeholder="微信收款码 URL"><input class="chk-input" id="admAliQr" value="'+escAttr(settings.alipayQr)+'" placeholder="支付宝收款码 URL"><input class="chk-input" id="admShop" value="'+escAttr(settings.shopName)+'" placeholder="店铺名称"><button class="btn-sm gold" onclick="saveAdmSettings()">保存设置</button></div>';
-  h+='</div></div>';
-  document.getElementById('adminContent').innerHTML=h;document.getElementById('adminOverlay').classList.add('open')
+var logoTaps=0,logoTimer;
+function showPwd(){
+  document.getElementById('pwdOverlay').classList.add('show');
+  document.getElementById('pwdInput').value='';
+  setTimeout(function(){document.getElementById('pwdInput').focus()},300)
 }
-function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open')}
-function changePwd(){var np=document.getElementById('newPwd').value.trim();if(!np){toast('请输入新密码');return};adminPassword=np;saveTokens();toast('密码已修改')}
-function saveTokens_ui(){ghToken=document.getElementById('admGhToken').value.trim();giteeToken=document.getElementById('admGiteeToken').value.trim();saveTokens();renderAdmin();toast('令牌已保存')}
-
+function hidePwd(){document.getElementById('pwdOverlay').classList.remove('show')}
+function checkPwd(){
+  if(document.getElementById('pwdInput').value===adminPassword){hidePwd();renderAdmin()}else toast('密码错误')
+}
+function renderAdmin(){
+  var h='<div class="admin-panel"><div class="admin-head"><h3>⚙️ 管理后台</h3><button id="admClose">✕</button></div><div class="admin-body">';
+  h+='<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"><button class="btn-sm gold" id="admAdd">+ 添加</button><button class="btn-sm ghost" id="admSync">📤 同步到GitHub</button><button class="btn-sm ghost" id="admExport">📥 导出备份</button></div>';
+  h+='<div style="margin-bottom:14px"><div class="chk-label" style="margin-bottom:8px">🔑 修改密码</div><input class="chk-input" id="newPwd" placeholder="新密码" style="margin-bottom:6px"><button class="btn-sm gold" id="savePwd">修改密码</button></div>';
+  h+='<div style="margin-bottom:14px"><div class="chk-label" style="margin-bottom:8px">🔐 API令牌</div><input class="chk-input" id="admGh" placeholder="GitHub Token" type="password" value="'+escA(ghToken)+'"><button class="btn-sm gold" id="saveTk" style="margin-top:6px">保存令牌</button></div>';
+  h+='<div class="chk-label" style="margin-bottom:10px">📦 商品 ('+products.length+'件)</div>';
+  products.forEach(function(p,i){h+='<div style="background:var(--dark3);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.04)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="color:var(--text);font-weight:600;font-size:13px">#'+p.id+' '+escH(p.name).substring(0,20)+'...</span><span style="color:var(--gold);font-weight:700">¥'+p.price+'</span></div><div style="display:flex;gap:6px"><button class="btn-sm ghost" data-edit="'+i+'">✎ 编辑</button><button class="btn-sm ghost" data-dup="'+i+'">⧉ 复制</button><button class="btn-sm ghost" data-delp="'+i+'" style="color:var(--red)">✕ 删除</button></div></div>'});
+  h+='</div></div>';
+  document.getElementById('adminContent').innerHTML=h;
+  document.getElementById('adminOverlay').classList.add('show');
+  // bind
+  document.getElementById('admClose').onclick=function(){document.getElementById('adminOverlay').classList.remove('show')};
+  document.getElementById('admAdd').onclick=addProduct;
+  document.getElementById('admSync').onclick=syncToGitHub;
+  document.getElementById('admExport').onclick=exportData;
+  document.getElementById('savePwd').onclick=function(){var np=document.getElementById('newPwd').value.trim();if(!np){toast('输入密码');return};adminPassword=np;saveTokens();toast('密码已修改')};
+  document.getElementById('saveTk').onclick=function(){ghToken=document.getElementById('admGh').value.trim();saveTokens();toast('令牌已保存')};
+  var eds=document.querySelectorAll('[data-edit]');for(var i=0;i<eds.length;i++){(function(b){b.onclick=function(){editProduct(parseInt(b.getAttribute('data-edit')))}})(eds[i])}
+  var dus=document.querySelectorAll('[data-dup]');for(var j=0;j<dus.length;j++){(function(b){b.onclick=function(){dupProduct(parseInt(b.getAttribute('data-dup')))}})(dus[j])}
+  var dls=document.querySelectorAll('[data-delp]');for(var k=0;k<dls.length;k++){(function(b){b.onclick=function(){delProduct(parseInt(b.getAttribute('data-delp')))}})(dls[k])}
+}
 function editProduct(i){
-  var p=products[i];var h='<div class="admin-panel"><div class="admin-head"><h3>编辑商品 #'+p.id+'</h3><button onclick="renderAdmin()">✕</button></div><div class="admin-body">';
-  h+='<div class="fg"><label>名称</label><input id="epName" value="'+escAttr(p.name)+'"></div>';
+  var p=products[i];
+  var h='<div class="admin-panel"><div class="admin-head"><h3>编辑 #'+p.id+'</h3><button id="edBack">← 返回</button></div><div class="admin-body">';
+  h+='<div class="fg"><label>名称</label><input id="epName" value="'+escA(p.name)+'"></div>';
   h+='<div class="fg-row"><div class="fg"><label>售价 ¥</label><input id="epPrice" type="number" value="'+p.price+'"></div><div class="fg"><label>原价 ¥</label><input id="epOrig" type="number" value="'+p.orig+'"></div></div>';
   h+='<div class="fg-row"><div class="fg"><label>分类</label><select id="epCat">';['白酒','红酒','啤酒','洋酒','清酒','礼盒'].forEach(function(c){h+='<option'+(p.cat===c?' selected':'')+'>'+c+'</option>'});h+='</select></div><div class="fg"><label>瓶型</label><select id="epB">';['maotai','wuliangye','jiannanchun','langjiu','wine','spirit','beer','sake','gift'].forEach(function(b){h+='<option'+(p.b===b?' selected':'')+'>'+b+'</option>'});h+='</select></div></div>';
-  h+='<div class="fg-row"><div class="fg"><label>品牌</label><input id="epBrand" value="'+escAttr(p.brand)+'"></div><div class="fg"><label>型号</label><input id="epBtype" value="'+escAttr(p.btype)+'"></div></div>';
-  h+='<div class="fg-row"><div class="fg"><label>酒精度</label><input id="epAlc" value="'+escAttr(p.alc)+'"></div><div class="fg"><label>容量</label><input id="epVol" value="'+escAttr(p.vol)+'"></div></div>';
+  h+='<div class="fg-row"><div class="fg"><label>品牌</label><input id="epBrand" value="'+escA(p.brand)+'"></div><div class="fg"><label>型号</label><input id="epBtype" value="'+escA(p.btype)+'"></div></div>';
+  h+='<div class="fg-row"><div class="fg"><label>酒精度</label><input id="epAlc" value="'+escA(p.alc)+'"></div><div class="fg"><label>容量</label><input id="epVol" value="'+escA(p.vol)+'"></div></div>';
   h+='<div class="fg-row"><div class="fg"><label>评分</label><input id="epRank" type="number" step="0.1" value="'+p.rank+'"></div><div class="fg"><label>销量</label><input id="epSales" type="number" value="'+p.sales+'"></div></div>';
-  h+='<div class="fg"><label>标签</label><input id="epTag" value="'+escAttr(p.tag||'')+'"></div>';
-  h+='<div class="fg"><label>标签颜色</label><input id="epBcolor" value="'+escAttr(p.bcolor)+'"></div>';
-  h+='<div class="fg"><label>描述</label><textarea id="epDesc" rows="3">'+escHtml(p.desc)+'</textarea></div>';
-  h+='<button class="btn btn-gold" style="width:100%;margin-top:8px" onclick="saveEdit('+i+')">保存</button></div></div>';
-  document.getElementById('adminContent').innerHTML=h
+  h+='<div class="fg"><label>标签</label><input id="epTag" value="'+escA(p.tag||'')+'"></div>';
+  h+='<div class="fg"><label>描述</label><textarea id="epDesc" rows="3">'+escH(p.desc)+'</textarea></div>';
+  h+='<button class="btn btn-gold" style="width:100%;margin-top:8px" id="epSave">保存</button></div></div>';
+  document.getElementById('adminContent').innerHTML=h;
+  document.getElementById('edBack').onclick=renderAdmin;
+  document.getElementById('epSave').onclick=function(){
+    p.name=document.getElementById('epName').value.trim();
+    p.price=parseFloat(document.getElementById('epPrice').value)||0;
+    p.orig=parseFloat(document.getElementById('epOrig').value)||0;
+    p.cat=document.getElementById('epCat').value;
+    p.b=document.getElementById('epB').value;
+    p.brand=document.getElementById('epBrand').value.trim();
+    p.btype=document.getElementById('epBtype').value.trim();
+    p.alc=document.getElementById('epAlc').value.trim();
+    p.vol=document.getElementById('epVol').value.trim();
+    p.rank=parseFloat(document.getElementById('epRank').value)||0;
+    p.sales=parseInt(document.getElementById('epSales').value)||0;
+    p.tag=document.getElementById('epTag').value.trim();
+    p.desc=document.getElementById('epDesc').value.trim();
+    saveProducts();renderAdmin();renderHome();toast('已保存')
+  }
 }
-function saveEdit(i){
-  var p=products[i];
-  p.name=document.getElementById('epName').value.trim();
-  p.price=parseFloat(document.getElementById('epPrice').value)||0;
-  p.orig=parseFloat(document.getElementById('epOrig').value)||0;
-  p.cat=document.getElementById('epCat').value;
-  p.b=document.getElementById('epB').value;
-  p.brand=document.getElementById('epBrand').value.trim();
-  p.btype=document.getElementById('epBtype').value.trim();
-  p.alc=document.getElementById('epAlc').value.trim();
-  p.vol=document.getElementById('epVol').value.trim();
-  p.rank=parseFloat(document.getElementById('epRank').value)||0;
-  p.sales=parseInt(document.getElementById('epSales').value)||0;
-  p.tag=document.getElementById('epTag').value.trim();
-  p.bcolor=document.getElementById('epBcolor').value.trim();
-  p.desc=document.getElementById('epDesc').value.trim();
-  saveProducts();renderAdmin();renderHome();toast('已保存')
-}
-function addNewProduct(){
+function addProduct(){
   var id=Math.max.apply(null,products.map(function(p){return p.id}))+1;
   products.push({id:id,name:'新商品',cat:'白酒',price:999,orig:1999,alc:'52%',vol:'500ml',tag:'新品',b:'maotai',brand:'品牌',btype:'型号',bcolor:'#c41e2a',btext:'#ffd700',rank:4.5,sales:0,desc:'商品描述'});
-  saveProducts();var i=products.length-1;renderAdmin();setTimeout(function(){editProduct(i)},200)
+  saveProducts();renderAdmin();toast('已添加')
 }
 function dupProduct(i){var c=JSON.parse(JSON.stringify(products[i]));c.id=Math.max.apply(null,products.map(function(p){return p.id}))+1;c.name+='（副本）';products.splice(i+1,0,c);saveProducts();renderAdmin();toast('已复制')}
-function delProduct(i){if(!confirm('确定删除 '+products[i].name+'？'))return;products.splice(i,1);saveProducts();renderAdmin();renderHome();toast('已删除')}
-function saveAdmSettings(){settings.wechatQr=document.getElementById('admWxQr').value.trim();settings.alipayQr=document.getElementById('admAliQr').value.trim();settings.shopName=document.getElementById('admShop').value.trim();saveSettings();toast('设置已保存')}
-
-// ============ GitHub 同步 ============
+function delProduct(i){if(!confirm('删除 '+products[i].name+'？'))return;products.splice(i,1);saveProducts();renderAdmin();renderHome();toast('已删除')}
 function syncToGitHub(){
-  if(!ghToken){toast('未配置 GitHub Token');return}
-  var data=JSON.stringify(products,null,2);
-  var b64='';for(var i=0;i<data.length;i++){var c=data.charCodeAt(i);if(c<128)b64+=String.fromCharCode(c);else if(c<2048){b64+=String.fromCharCode(192|c>>6);b64+=String.fromCharCode(128|c&63)}else{b64+=String.fromCharCode(224|c>>12);b64+=String.fromCharCode(128|c>>6&63);b64+=String.fromCharCode(128|c&63)}}b64=btoa(b64);
-  var body=JSON.stringify({message:'Admin: update products',content:b64});
-  fetch('https://api.github.com/repos/'+ghRepo+'/contents/products.json',{method:'PUT',headers:{'Authorization':'Bearer '+ghToken,'Accept':'application/vnd.github+json','Content-Type':'application/json'},body:body}).then(function(r){return r.json()}).then(function(d){
-    if(d.content)toast('已同步到 GitHub 服务器');
-    else if(d.message)toast('同步失败: '+d.message);
-    else toast('同步成功')
-  }).catch(function(e){toast('网络错误，请重试')})
+  if(!ghToken){toast('请先设置GitHub Token');return}
+  var j=JSON.stringify(products,null,2);
+  var b='';for(var i=0;i<j.length;i++){var c=j.charCodeAt(i);if(c<128)b+=String.fromCharCode(c);else if(c<2048){b+=String.fromCharCode(192|c>>6);b+=String.fromCharCode(128|c&63)}else{b+=String.fromCharCode(224|c>>12);b+=String.fromCharCode(128|c>>6&63);b+=String.fromCharCode(128|c&63)}}b=btoa(b);
+  fetch('https://api.github.com/repos/Xfw939/jiuxiang/contents/products.json',{method:'PUT',headers:{'Authorization':'Bearer '+ghToken,'Accept':'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:'Admin update',content:b})}).then(function(r){return r.json()}).then(function(d){if(d.content)toast('已同步到服务器');else toast('失败: '+(d.message||'未知'))}).catch(function(){toast('网络错误')})
+}
 function exportData(){
   var blob=new Blob([JSON.stringify({products:products,settings:settings},null,2)],{type:'application/json'});
-  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='jiuxiang-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
-  toast('已导出')
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='jiuxiang-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('已导出')
 }
 
-// ============ 工具 ============
-function escHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
-function escAttr(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function fmtNum(n){return n>=10000?(n/10000).toFixed(1)+'万':n}
-function toast(msg){var t=document.createElement('div');t.className='toast';t.textContent=msg;document.getElementById('app').appendChild(t);setTimeout(function(){t.remove()},1800)}
+// ============ 事件绑定 ============
+document.getElementById('logoBtn').addEventListener('click',function(){
+  logoTaps++;clearTimeout(logoTimer);
+  if(logoTaps>=5){logoTaps=0;showPwd()}else logoTimer=setTimeout(function(){logoTaps=0},1500)
+});
+document.getElementById('pwdConfirm').addEventListener('click',checkPwd);
+document.getElementById('pwdCancel').addEventListener('click',hidePwd);
+document.getElementById('cartNavBtn').addEventListener('click',toggleCart);
+document.getElementById('orderNavBtn').addEventListener('click',function(){navTo('orders')});
+document.getElementById('nav-home').addEventListener('click',function(){navTo('home')});
+document.getElementById('nav-orders').addEventListener('click',function(){navTo('orders')});
+document.getElementById('nav-cart').addEventListener('click',toggleCart);
+document.getElementById('nav-admin').addEventListener('click',showPwd);
+document.getElementById('searchInput').addEventListener('input',function(){renderHome(this.value)});
 
-// ============ 导航事件 ============
-document.getElementById('ni-home').addEventListener('click',function(){pageHistory=['home'];navTo('home')});
-document.getElementById('ni-orders').addEventListener('click',function(){pageHistory=['home','orders'];navTo('orders')});
-
-// ============ 初始化 ============
-loadTokens();loadProducts();loadSettings();renderHome()
+// ============ 启动 ============
+loadAll();
+renderHome();
+})();
 </script>
 </body>
 </html>
