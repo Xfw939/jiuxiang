@@ -2,536 +2,517 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>酒巷 · 精选好酒</title>
 <style>
-  /* 字体：优先系统字体，无需加载外部资源 */
-  body { font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif; background:#f0ede8; display:flex; justify-content:center; min-height:100vh; }
-  .phone { width:414px; max-width:100vw; min-height:100vh; background:var(--bg); position:relative; overflow-x:hidden; box-shadow:0 0 0 1px #ddd,0 20px 60px rgba(0,0,0,.3); display:flex; flex-direction:column; }
-  .statusbar { height:32px; background:#1a1a1a; display:flex; align-items:center; justify-content:space-between; padding:0 18px; color:#fff; font-size:11px; flex-shrink:0; }
-  .navbar { position:sticky; top:0; z-index:50; background:linear-gradient(135deg,#1a1a1a,#2d1f0e); padding:12px 18px; display:flex; align-items:center; gap:12px; flex-shrink:0; }
-  .navbar .back-btn { background:none; border:none; color:#fff; font-size:20px; cursor:pointer; display:none; }
-  .navbar .title { font-family:'STSong','Songti SC','Noto Serif SC',serif; font-size:19px; font-weight:900; color:var(--gold); letter-spacing:3px; flex:1; }
-  .navbar .nav-icon { background:none; border:none; color:#fff; font-size:22px; cursor:pointer; padding:4px; position:relative; }
-  .nav-icon .badge { position:absolute; top:-2px; right:-4px; background:var(--red); color:#fff; font-size:10px; font-weight:700; width:18px; height:18px; border-radius:50%; display:none; align-items:center; justify-content:center; }
-  .page { display:none; flex:1; overflow-y:auto; }
-  .page.active { display:block; }
-  .search-bar { margin:12px 16px; display:flex; align-items:center; background:#fff; border-radius:24px; padding:10px 16px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
-  .search-bar input { flex:1; border:none; outline:none; font-size:14px; font-family:inherit; background:transparent; }
-  .banner { margin:0 16px 14px; height:150px; border-radius:14px; background:linear-gradient(135deg,#2d1f0e,#4a3520,#1a1a1a); position:relative; overflow:hidden; color:#fff; display:flex; align-items:center; padding:0 28px; box-shadow:0 4px 24px rgba(0,0,0,.2); }
-  .banner::after { content:''; position:absolute; right:-30px; top:-40px; width:200px; height:240px; border-radius:50%; background:rgba(201,169,110,.08); }
-  .banner-text { position:relative; z-index:1; }
-  .banner-text .b-title { font-family:'STSong','Songti SC','Noto Serif SC',serif; font-size:26px; font-weight:900; letter-spacing:2px; line-height:1.3; }
-  .banner-text .b-sub { font-size:13px; opacity:.6; margin-top:6px; letter-spacing:1px; }
-  .cats { display:flex; gap:10px; padding:0 16px 14px; overflow-x:auto; scrollbar-width:none; }
-  .cats::-webkit-scrollbar { display:none; }
-  .cat-chip { flex-shrink:0; padding:8px 18px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; background:#fff; color:#666; border:1px solid transparent; transition:all .25s; white-space:nowrap; box-shadow:0 1px 4px rgba(0,0,0,.04); }
-  .cat-chip.active { background:#1a1a1a; color:var(--gold); border-color:var(--gold); }
-  .sec-title { display:flex; align-items:center; gap:8px; padding:6px 16px 12px; font-size:17px; font-weight:700; font-family:'STSong','Songti SC','Noto Serif SC',serif; }
-  .sec-title::before { content:''; width:4px; height:18px; background:var(--gold); border-radius:2px; }
-  .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 16px 20px; }
-  .product-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.06); cursor:pointer; transition:transform .2s; }
-  .product-card:active { transform:scale(.97); }
-  .product-card .img { height:170px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
-  .product-card .tag { position:absolute; top:8px; left:8px; background:var(--red); color:#fff; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; z-index:2; }
-  .product-card .info { padding:12px 14px 14px; }
-  .product-card .name { font-size:14px; font-weight:600; color:var(--text); line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-  .product-card .meta { font-size:11px; color:var(--text-light); margin:4px 0 8px; }
-  .product-card .price-row { display:flex; align-items:baseline; justify-content:space-between; }
-  .product-card .price { font-size:22px; font-weight:900; color:var(--red); font-family:'STSong','Songti SC','Noto Serif SC',serif; }
-  .product-card .add-btn { width:30px; height:30px; border-radius:50%; background:var(--gold); color:#fff; border:none; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
-  .product-card .add-btn:active { transform:scale(.85); background:var(--gold-dark); }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#d4a853;--gold2:#c9973a;--gold3:#b8860b;--dark:#0d0d0d;--dark2:#1a1a1a;--dark3:#222;
+  --red:#c0392b;--text:#e8e0d0;--text2:#a09888;--white:#fff;--radius:14px;--shadow:0 8px 40px rgba(0,0,0,.5);
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;background:#000;display:flex;justify-content:center;min-height:100vh}
+.phone{width:430px;max-width:100vw;min-height:100vh;background:var(--dark);position:relative;overflow-x:hidden;box-shadow:0 0 80px rgba(212,168,83,.08);display:flex;flex-direction:column}
 
-  /* ===== CSS Bottles ===== */
-  .bottle-wrap { position:relative; width:90px; height:142px; display:flex; flex-direction:column; align-items:center; z-index:1; }
-  .bottle-body { width:62px; height:100px; border-radius:12px 12px 5px 5px; position:relative; overflow:hidden; box-shadow:inset 2px 0 8px rgba(255,255,255,.25),inset -2px 0 6px rgba(0,0,0,.15),0 6px 18px rgba(0,0,0,.18); }
-  .bottle-body::after { content:''; position:absolute; left:5px; top:0; width:12px; height:100%; background:linear-gradient(90deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,.06) 100%); border-radius:50%; }
-  .bottle-label { position:absolute; left:6px; right:6px; top:28px; bottom:20px; border-radius:5px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4px; box-shadow:0 1px 3px rgba(0,0,0,.2); }
-  .bottle-label .bl-brand { font-size:8px; font-weight:900; letter-spacing:2px; text-align:center; line-height:1.2; }
-  .bottle-label .bl-type { font-size:6px; font-weight:500; opacity:.8; margin-top:1px; letter-spacing:1px; }
-  .bottle-label .bl-alc { font-size:7px; font-weight:700; margin-top:2px; }
-  .bottle-neck { width:24px; height:20px; border-radius:3px 3px 0 0; box-shadow:inset 2px 0 6px rgba(255,255,255,.2),inset -1px 0 4px rgba(0,0,0,.1); }
-  .bottle-cap { width:28px; height:14px; border-radius:4px 4px 2px 2px; box-shadow:0 -1px 3px rgba(0,0,0,.2),inset 0 1px 2px rgba(255,255,255,.2); }
-  /* 茅台白瓷瓶 */
-  .b-maotai .bottle-body { background:linear-gradient(180deg,#fafaf5,#f0ece2 15%,#e8e3d5 50%,#ddd8c8); }
-  .b-maotai .bottle-label { background:linear-gradient(180deg,#c41e2a,#a01822); color:#fff; }
-  .b-maotai .bottle-label .bl-brand { color:#ffd700; font-size:9px; }
-  .b-maotai .bottle-neck { background:linear-gradient(180deg,#f5f0e8,#e0d8c8); }
-  .b-maotai .bottle-cap { background:linear-gradient(180deg,#c41e2a,#8b0000); }
-  /* 五粮液水晶瓶 */
-  .b-wuliangye .bottle-body { background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(225,225,238,.55),rgba(255,255,255,.75)); border:1px solid rgba(200,200,215,.5); }
-  .b-wuliangye .bottle-label { background:linear-gradient(180deg,#d4213d,#aa1830); color:#fff; }
-  .b-wuliangye .bottle-label .bl-brand { color:#ffd700; }
-  .b-wuliangye .bottle-neck { background:rgba(255,255,255,.8); border:1px solid rgba(200,200,215,.3); border-bottom:none; }
-  .b-wuliangye .bottle-cap { background:linear-gradient(180deg,#d4213d,#8b1525); }
-  /* 剑南春水晶瓶 */
-  .b-jiannanchun .bottle-body { background:linear-gradient(180deg,rgba(215,220,238,.9),rgba(195,205,228,.7),rgba(215,220,238,.9)); border:1px solid rgba(175,185,210,.4); }
-  .b-jiannanchun .bottle-label { background:linear-gradient(180deg,#c8102e,#9a0c22); color:#fff; }
-  .b-jiannanchun .bottle-label .bl-brand { color:#ffd700; }
-  .b-jiannanchun .bottle-neck { background:rgba(215,220,238,.9); border:1px solid rgba(175,185,210,.3); border-bottom:none; }
-  .b-jiannanchun .bottle-cap { background:linear-gradient(180deg,#c8102e,#7a0818); }
-  /* 郎酒红瓶 */
-  .b-langjiu .bottle-body { background:linear-gradient(180deg,#d4212a,#b81c24,#8b1318); }
-  .b-langjiu .bottle-label { background:rgba(0,0,0,.5); color:#ffd700; }
-  .b-langjiu .bottle-label .bl-brand { color:#ffd700; }
-  .b-langjiu .bottle-neck { background:linear-gradient(180deg,#c41e2a,#a01822); }
-  .b-langjiu .bottle-cap { background:linear-gradient(180deg,#ffd700,#c8a020); }
-  /* 红酒瓶 */
-  .b-wine .bottle-body { width:56px; height:105px; border-radius:5px; background:linear-gradient(180deg,#152d15,#0a180a,#152815); }
-  .b-wine .bottle-label { background:linear-gradient(180deg,#f5f0e8,#e8e0d0); color:#333; }
-  .b-wine .bottle-label .bl-brand { color:#6b0000; font-size:7px; }
-  .b-wine .bottle-neck { width:18px; background:linear-gradient(180deg,#152d15,#0a180a); }
-  .b-wine .bottle-cap { width:22px; background:linear-gradient(180deg,#2d1f0e,#1a1008); }
-  /* 威士忌瓶 */
-  .b-spirit .bottle-body { width:56px; height:100px; border-radius:3px; background:linear-gradient(180deg,#d4a860,#b8863a,#8b6518); }
-  .b-spirit .bottle-label { background:rgba(255,255,255,.9); color:#1a1a1a; }
-  .b-spirit .bottle-label .bl-brand { color:#4a3010; font-size:7px; }
-  .b-spirit .bottle-neck { width:20px; height:26px; border-radius:2px; background:linear-gradient(180deg,#d4a860,#b8863a); }
-  .b-spirit .bottle-cap { width:22px; background:linear-gradient(180deg,#2d1f0e,#1a1008); }
-  /* 啤酒罐 */
-  .b-beer .bottle-body { width:50px; height:112px; border-radius:10px 10px 4px 4px; }
-  .b-beer .bottle-label { top:18px; bottom:28px; border-radius:4px; }
-  .b-beer .bottle-neck { width:16px; height:7px; border-radius:2px; }
-  .b-beer .bottle-cap { width:20px; height:5px; border-radius:2px; }
-  /* 清酒瓶 */
-  .b-sake .bottle-body { width:50px; height:108px; border-radius:5px; }
-  .b-sake .bottle-label { top:32px; bottom:22px; }
-  .b-sake .bottle-neck { width:18px; height:24px; }
-  .b-sake .bottle-cap { width:22px; height:10px; }
-  /* 礼盒 */
-  .b-gift .bottle-body { width:66px; height:92px; border-radius:7px; }
-  .b-gift .bottle-label { background:rgba(0,0,0,.4); color:#ffd700; }
-  .b-gift .bottle-cap { background:linear-gradient(180deg,#ffd700,#c8a020); width:32px; }
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:50;background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:14px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(212,168,83,.12)}
+.navbar .logo{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:4px;cursor:pointer}
+.navbar .spacer{flex:1}
+.navbar .nav-btn{background:none;border:1px solid rgba(255,255,255,.1);color:#fff;font-size:18px;cursor:pointer;padding:8px 12px;border-radius:20px;position:relative;transition:all .2s}
+.navbar .nav-btn:active{background:rgba(255,255,255,.05)}
+.navbar .badge{position:absolute;top:-4px;right:-6px;background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;padding:0 4px}
+.page{display:none;flex:1;overflow-y:auto}
+.page.active{display:block}
 
-  /* 详情页大瓶 */
-  .bottle-wrap.large { width:150px; height:230px; }
-  .bottle-wrap.large .bottle-body { width:100px; height:162px; border-radius:20px 20px 10px 10px; }
-  .bottle-wrap.large .bottle-label { left:10px; right:10px; top:46px; bottom:34px; border-radius:8px; padding:8px; }
-  .bottle-wrap.large .bottle-label .bl-brand { font-size:14px; letter-spacing:3px; }
-  .bottle-wrap.large .bottle-label .bl-type { font-size:10px; }
-  .bottle-wrap.large .bottle-label .bl-alc { font-size:10px; }
-  .bottle-wrap.large .bottle-neck { width:40px; height:32px; border-radius:5px 5px 0 0; }
-  .bottle-wrap.large .bottle-cap { width:46px; height:22px; border-radius:6px 6px 2px 2px; }
-  .bottle-wrap.large.b-wine .bottle-body { width:90px; }
-  .bottle-wrap.large.b-wine .bottle-neck,.bottle-wrap.large.b-wine .bottle-cap { width:32px; }
-  .bottle-wrap.large.b-spirit .bottle-body { width:90px; }
-  .bottle-wrap.large.b-spirit .bottle-neck { width:32px; height:42px; }
-  .bottle-wrap.large.b-beer .bottle-body { width:80px; height:178px; border-radius:16px 16px 6px 6px; }
-  .bottle-wrap.large.b-sake .bottle-body { width:80px; }
-  .bottle-wrap.large.b-sake .bottle-neck { width:28px; height:38px; }
-  .bottle-wrap.large.b-gift .bottle-body { width:106px; }
+/* Hero */
+.hero{margin:20px 16px;height:180px;border-radius:var(--radius);background:linear-gradient(135deg,#1a1208 0%,#2d1f0e 30%,#1a1008 60%,#0d0804 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding:0 28px;border:1px solid rgba(212,168,83,.1)}
+.hero::before{content:'';position:absolute;right:-40px;top:-60px;width:240px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.1) 0%,transparent 70%)}
+.hero::after{content:'';position:absolute;left:20px;bottom:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(212,168,83,.04) 0%,transparent 70%)}
+.hero-text{position:relative;z-index:1}
+.hero-text h2{font-size:30px;font-weight:900;color:var(--gold);letter-spacing:3px;line-height:1.2;text-shadow:0 0 40px rgba(212,168,83,.3)}
+.hero-text p{font-size:13px;color:var(--text2);margin-top:8px;letter-spacing:2px}
 
-  /* ===== Detail Modal ===== */
-  .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.55); z-index:100; display:none; align-items:flex-end; justify-content:center; }
-  .modal-overlay.open { display:flex; }
-  .modal { width:414px; max-width:100vw; max-height:85vh; background:#fff; border-radius:20px 20px 0 0; overflow-y:auto; animation:slideUp .3s ease; }
-  @keyframes slideUp { from{transform:translateY(100%);} }
-  .detail-img { height:300px; display:flex; align-items:center; justify-content:center; position:relative; }
-  .detail-img .close-btn { position:absolute; top:14px; right:14px; z-index:5; width:32px; height:32px; border-radius:50%; background:rgba(0,0,0,.35); color:#fff; border:none; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-  .detail-body { padding:20px 18px 30px; }
-  .detail-name { font-size:20px; font-weight:700; line-height:1.4; margin-bottom:8px; }
-  .detail-meta { font-size:12px; color:#999; margin-bottom:14px; }
-  .detail-price { font-size:34px; font-weight:900; color:var(--red); font-family:'STSong','Songti SC','Noto Serif SC',serif; margin-bottom:6px; }
-  .detail-orig { font-size:13px; color:#bbb; text-decoration:line-through; }
-  .detail-desc { font-size:14px; color:#666; line-height:1.8; margin:16px 0; padding-top:14px; border-top:1px solid #f0f0f0; }
-  .detail-actions { display:flex; gap:10px; }
-  .btn-buy { flex:1; padding:14px; border:none; border-radius:24px; font-size:15px; font-weight:700; cursor:pointer; letter-spacing:1px; font-family:inherit; transition:all .2s; }
-  .btn-buy.cart { background:#f0ede8; color:#333; }
-  .btn-buy.cart:active { background:#ddd; }
-  .btn-buy.now { background:var(--gold); color:#fff; }
-  .btn-buy.now:active { background:var(--gold-dark); }
+/* Search */
+.search-wrap{margin:0 16px 16px}
+.search-box{display:flex;align-items:center;background:var(--dark2);border-radius:28px;padding:12px 18px;border:1px solid rgba(255,255,255,.06);transition:all .3s}
+.search-box:focus-within{border-color:var(--gold);box-shadow:0 0 20px rgba(212,168,83,.1)}
+.search-box input{flex:1;border:none;outline:none;font-size:14px;background:transparent;color:var(--text);font-family:inherit}
+.search-box input::placeholder{color:rgba(255,255,255,.2)}
+.search-box .s-icon{color:var(--gold);font-size:18px;margin-right:10px}
 
-  /* ===== Cart Drawer ===== */
-  .cart-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.55); z-index:200; display:none; align-items:flex-end; justify-content:center; }
-  .cart-overlay.open { display:flex; }
-  .cart-drawer { width:414px; max-width:100vw; max-height:70vh; background:#fff; border-radius:20px 20px 0 0; display:flex; flex-direction:column; animation:slideUp .3s ease; }
-  .cart-head { display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid #f0f0f0; font-size:17px; font-weight:700; }
-  .cart-items { flex:1; overflow-y:auto; padding:10px 0; max-height:280px; }
-  .cart-item { display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid #f8f8f8; }
-  .cart-item .ci-img { width:50px; height:80px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transform:scale(.55); }
-  .cart-item .ci-info { flex:1; }
-  .cart-item .ci-name { font-size:14px; font-weight:600; }
-  .cart-item .ci-price { font-size:16px; font-weight:700; color:var(--red); }
-  .cart-item .qty-ctrl { display:flex; align-items:center; gap:8px; }
-  .cart-item .qty-ctrl button { width:26px; height:26px; border-radius:50%; border:1px solid #ddd; background:#fff; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-  .cart-foot { padding:16px 20px; border-top:1px solid #f0f0f0; }
-  .cart-foot .total { display:flex; justify-content:space-between; font-size:18px; font-weight:700; margin-bottom:12px; }
-  .cart-foot .total .amt { color:var(--red); font-size:24px; }
-  .btn-checkout { width:100%; padding:14px; background:var(--gold); color:#fff; border:none; border-radius:24px; font-size:16px; font-weight:700; cursor:pointer; letter-spacing:2px; font-family:inherit; }
+/* Categories */
+.cats{display:flex;gap:10px;padding:0 16px 18px;overflow-x:auto;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat-chip{flex-shrink:0;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:600;cursor:pointer;background:var(--dark2);color:var(--text2);border:1px solid rgba(255,255,255,.05);transition:all .3s;white-space:nowrap;letter-spacing:1px}
+.cat-chip.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border-color:transparent;box-shadow:0 4px 20px rgba(212,168,83,.25)}
 
-  /* Misc */
-  .checkout-sec { background:#fff; margin:0 16px 14px; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
-  .checkout-sec .sec-label { font-size:13px; font-weight:700; color:#999; letter-spacing:2px; margin-bottom:12px; }
-  .form-input { width:100%; padding:12px; border:1px solid #e0e0e0; border-radius:8px; font-size:14px; font-family:inherit; outline:none; margin-bottom:10px; background:#fafafa; transition:border .2s; }
-  .form-input:focus { border-color:var(--gold); background:#fff; }
-  .order-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid #f8f8f8; font-size:13px; }
-  .order-item .oi-name { flex:1; }
-  .order-item .oi-price { font-weight:600; color:var(--red); white-space:nowrap; }
-  .pay-option { display:flex; align-items:center; gap:12px; padding:14px; border:2px solid #eee; border-radius:12px; cursor:pointer; margin-bottom:8px; transition:all .2s; }
-  .pay-option.active { border-color:var(--gold); background:#fdfaf5; }
-  .pay-option .pay-radio { width:20px; height:20px; border-radius:50%; border:2px solid #ccc; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .pay-option.active .pay-radio { border-color:var(--gold); }
-  .pay-option.active .pay-radio::after { content:''; width:10px; height:10px; border-radius:50%; background:var(--gold); }
-  .pay-option .pay-label { font-size:15px; font-weight:600; }
-  .pay-option .pay-icon { font-size:28px; }
-  .qr-section { text-align:center; padding:30px 20px; }
-  .qr-box { width:220px; height:220px; margin:0 auto 16px; border:1px solid #eee; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-  .qr-box img { width:100%; height:100%; object-fit:contain; }
-  .qr-box .no-qr { color:#ccc; font-size:13px; text-align:center; line-height:1.8; }
-  .qr-amount { font-size:28px; font-weight:900; color:var(--red); margin-bottom:6px; }
-  .qr-hint { font-size:12px; color:#999; margin-bottom:16px; }
-  .upload-box { border:2px dashed #ddd; border-radius:12px; padding:24px; text-align:center; cursor:pointer; transition:border .2s; }
-  .upload-box:hover { border-color:var(--gold); }
-  .upload-box .preview-img { max-width:100%; max-height:200px; border-radius:8px; display:none; }
-  .upload-box .upload-text { color:#999; font-size:13px; }
-  .btn-confirm { width:100%; padding:16px; border:none; border-radius:26px; font-size:17px; font-weight:700; cursor:pointer; letter-spacing:2px; font-family:inherit; margin-top:14px; transition:all .2s; background:var(--gold); color:#fff; }
-  .btn-confirm:active { background:var(--gold-dark); }
-  .btn-confirm:disabled { background:#ccc; cursor:not-allowed; }
-  .order-card { background:#fff; border-radius:12px; padding:18px; margin:0 16px 12px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
-  .order-card .oc-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .order-card .oc-id { font-size:12px; color:#999; }
-  .order-status { font-size:12px; padding:3px 10px; border-radius:12px; font-weight:600; }
-  .order-status.pending { background:#fff3cd; color:#b8860b; }
-  .order-status.paid { background:#d4edda; color:#155724; }
-  .order-status.shipped { background:#cce5ff; color:#004085; }
-  .order-card .oc-products { font-size:13px; color:#555; line-height:1.8; margin-bottom:8px; }
-  .order-card .oc-total { font-size:18px; font-weight:700; color:var(--red); text-align:right; }
-  .order-card .oc-actions { display:flex; gap:8px; margin-top:10px; }
-  .btn-sm { padding:8px 18px; border-radius:18px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; letter-spacing:1px; transition:all .2s; }
-  .btn-sm.gold { background:var(--gold); color:#fff; border:none; }
-  .btn-sm.white { background:#fff; color:#666; border:1px solid #ddd; }
-  .settings-item { background:#fff; margin:0 16px 12px; border-radius:12px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,.04); }
-  .settings-item label { display:block; font-size:13px; font-weight:600; color:#888; margin-bottom:6px; }
-  .toast { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(0,0,0,.8); color:#fff; padding:10px 24px; border-radius:20px; font-size:13px; z-index:300; pointer-events:none; animation:toastIn .3s ease; }
-  @keyframes toastIn { from{opacity:0;transform:translate(-50%,-50%) scale(.8);} }
-  .empty { text-align:center; padding:50px; color:#ccc; }
-  .empty .icon { font-size:50px; margin-bottom:8px; }
-  .bottom-nav { flex-shrink:0; position:sticky; bottom:0; z-index:40; background:#fff; border-top:1px solid #eee; display:flex; padding:6px 0; padding-bottom:max(6px,env(safe-area-inset-bottom)); }
-  .bottom-nav .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; padding:8px 0; cursor:pointer; color:#999; transition:color .2s; font-size:11px; font-weight:500; gap:4px; position:relative; }
-  .bottom-nav .nav-item .ni-icon { font-size:22px; }
-  .bottom-nav .nav-item.active { color:var(--gold); }
-  .bottom-nav .nav-item .badge { position:absolute; top:2px; right:50%; transform:translateX(22px); background:var(--red); color:#fff; font-size:10px; font-weight:700; width:18px; height:18px; border-radius:50%; display:none; align-items:center; justify-content:center; }
+/* Section */
+.sec-title{display:flex;align-items:center;gap:10px;padding:8px 16px 14px;color:var(--gold);font-size:17px;font-weight:700;letter-spacing:2px}
+.sec-title::before{content:'';width:3px;height:18px;background:linear-gradient(180deg,var(--gold),transparent);border-radius:2px}
+.sec-title .more{flex:1;text-align:right;font-size:12px;color:var(--text2);font-weight:400;letter-spacing:1px}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px 20px}
+.card{background:var(--dark2);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .3s;border:1px solid rgba(255,255,255,.04);position:relative}
+.card:active{transform:scale(.96)}
+.card .img{height:175px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.card .tag{position:absolute;top:10px;left:10px;background:var(--red);color:#fff;font-size:10px;padding:3px 10px;border-radius:4px;font-weight:600;z-index:2;letter-spacing:1px}
+.card .info{padding:14px 16px 16px}
+.card .name{font-size:13px;font-weight:600;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:.5px}
+.card .meta{font-size:11px;color:var(--text2);margin:6px 0 8px;letter-spacing:.5px}
+.card .price-row{display:flex;align-items:baseline;justify-content:space-between}
+.card .price{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:1px}
+.card .add-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-weight:700}
+.card .add-btn:active{transform:scale(.8)}
+
+/* CSS Bottles */
+.b-wrap{position:relative;width:85px;height:135px;display:flex;flex-direction:column;align-items:center;z-index:1}
+.b-body{width:58px;height:95px;border-radius:12px 12px 5px 5px;position:relative;overflow:hidden;box-shadow:inset 2px 0 10px rgba(255,255,255,.2),inset -2px 0 8px rgba(0,0,0,.2),0 8px 24px rgba(0,0,0,.3)}
+.b-body::after{content:'';position:absolute;left:4px;top:0;width:10px;height:100%;background:linear-gradient(90deg,rgba(255,255,255,.4) 0%,rgba(255,255,255,.04) 100%);border-radius:50%}
+.b-label{position:absolute;left:5px;right:5px;top:26px;bottom:18px;border-radius:5px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.b-label .bl-b{font-size:8px;font-weight:900;letter-spacing:2px;text-align:center;line-height:1.2}
+.b-label .bl-t{font-size:6px;font-weight:500;opacity:.8;margin-top:1px;letter-spacing:1px}
+.b-label .bl-a{font-size:7px;font-weight:700;margin-top:2px}
+.b-neck{width:22px;height:18px;border-radius:3px 3px 0 0;box-shadow:inset 2px 0 6px rgba(255,255,255,.15),inset -1px 0 4px rgba(0,0,0,.15)}
+.b-cap{width:26px;height:13px;border-radius:4px 4px 2px 2px;box-shadow:0 -1px 4px rgba(0,0,0,.3),inset 0 1px 2px rgba(255,255,255,.15)}
+.b-maotai .b-body{background:linear-gradient(180deg,#fafaf5,#f0ece2 15%,#e8e3d5 50%,#ddd8c8)}
+.b-maotai .b-label{background:linear-gradient(180deg,#c41e2a,#a01822);color:#fff}
+.b-maotai .bl-b{color:#ffd700;font-size:9px}
+.b-maotai .b-neck{background:linear-gradient(180deg,#f5f0e8,#e0d8c8)}
+.b-maotai .b-cap{background:linear-gradient(180deg,#c41e2a,#8b0000)}
+.b-wuliangye .b-body{background:linear-gradient(180deg,rgba(255,255,255,.7),rgba(225,225,238,.5),rgba(255,255,255,.7));border:1px solid rgba(200,200,215,.5)}
+.b-wuliangye .b-label{background:linear-gradient(180deg,#d4213d,#aa1830);color:#fff}
+.b-wuliangye .bl-b{color:#ffd700}
+.b-wuliangye .b-neck{background:rgba(255,255,255,.8);border:1px solid rgba(200,200,215,.3);border-bottom:none}
+.b-wuliangye .b-cap{background:linear-gradient(180deg,#d4213d,#8b1525)}
+.b-jiannanchun .b-body{background:linear-gradient(180deg,rgba(215,220,238,.9),rgba(195,205,228,.7),rgba(215,220,238,.9));border:1px solid rgba(175,185,210,.4)}
+.b-jiannanchun .b-label{background:linear-gradient(180deg,#c8102e,#9a0c22);color:#fff}
+.b-jiannanchun .bl-b{color:#ffd700}
+.b-jiannanchun .b-neck{background:rgba(215,220,238,.9);border:1px solid rgba(175,185,210,.3);border-bottom:none}
+.b-jiannanchun .b-cap{background:linear-gradient(180deg,#c8102e,#7a0818)}
+.b-langjiu .b-body{background:linear-gradient(180deg,#d4212a,#b81c24,#8b1318)}
+.b-langjiu .b-label{background:rgba(0,0,0,.5);color:#ffd700}
+.b-langjiu .bl-b{color:#ffd700}
+.b-langjiu .b-neck{background:linear-gradient(180deg,#c41e2a,#a01822)}
+.b-langjiu .b-cap{background:linear-gradient(180deg,#ffd700,#c8a020)}
+.b-wine .b-body{width:52px;height:100px;border-radius:5px;background:linear-gradient(180deg,#152d15,#0a180a,#152815)}
+.b-wine .b-label{background:linear-gradient(180deg,#f5f0e8,#e8e0d0);color:#333}
+.b-wine .bl-b{color:#6b0000;font-size:7px}
+.b-wine .b-neck{width:16px;background:linear-gradient(180deg,#152d15,#0a180a)}
+.b-wine .b-cap{width:20px;background:linear-gradient(180deg,#2d1f0e,#1a1008)}
+.b-spirit .b-body{width:52px;height:96px;border-radius:3px;background:linear-gradient(180deg,#d4a860,#b8863a,#8b6518)}
+.b-spirit .b-label{background:rgba(255,255,255,.9);color:#1a1a1a}
+.b-spirit .bl-b{color:#4a3010;font-size:7px}
+.b-spirit .b-neck{width:18px;height:24px;border-radius:2px;background:linear-gradient(180deg,#d4a860,#b8863a)}
+.b-spirit .b-cap{width:20px;background:linear-gradient(180deg,#2d1f0e,#1a1008)}
+.b-beer .b-body{width:46px;height:108px;border-radius:10px 10px 4px 4px}
+.b-beer .b-label{top:16px;bottom:26px;border-radius:4px}
+.b-beer .b-neck{width:14px;height:6px;border-radius:2px}
+.b-beer .b-cap{width:18px;height:5px;border-radius:2px}
+.b-sake .b-body{width:46px;height:104px;border-radius:5px}
+.b-sake .b-label{top:30px;bottom:20px}
+.b-sake .b-neck{width:16px;height:22px}
+.b-sake .b-cap{width:20px;height:9px}
+.b-gift .b-body{width:62px;height:88px;border-radius:7px}
+.b-gift .b-label{background:rgba(0,0,0,.4);color:#ffd700}
+.b-gift .b-cap{background:linear-gradient(180deg,#ffd700,#c8a020);width:30px}
+
+/* Detail */
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{width:430px;max-width:100vw;max-height:88vh;background:var(--dark2);border-radius:22px 22px 0 0;overflow-y:auto;animation:slideUp .35s ease;border-top:1px solid rgba(212,168,83,.15)}
+@keyframes slideUp{from{transform:translateY(100%)}}
+.modal .d-img{height:320px;display:flex;align-items:center;justify-content:center;position:relative}
+.modal .d-img .close{position:absolute;top:16px;right:16px;z-index:5;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)}
+.modal .d-body{padding:22px 20px 34px}
+.modal .d-name{font-size:20px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:8px}
+.modal .d-meta{font-size:12px;color:var(--text2);margin-bottom:16px;letter-spacing:.5px}
+.modal .d-price{font-size:36px;font-weight:900;color:var(--gold);margin-bottom:4px}
+.modal .d-orig{font-size:13px;color:var(--text2);text-decoration:line-through;margin-bottom:8px}
+.modal .d-desc{font-size:14px;color:var(--text2);line-height:1.9;margin:18px 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+.modal .d-actions{display:flex;gap:10px}
+.btn{flex:1;padding:15px;border:none;border-radius:26px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:2px;font-family:inherit;transition:all .2s}
+.btn-out{background:rgba(255,255,255,.05);color:var(--text);border:1px solid rgba(255,255,255,.1)}
+.btn-out:active{background:rgba(255,255,255,.1)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+.btn-gold:active{opacity:.8}
+
+/* Cart */
+.cart-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.cart-overlay.open{display:flex}
+.cart-drawer{width:430px;max-width:100vw;max-height:70vh;background:var(--dark2);border-radius:22px 22px 0 0;display:flex;flex-direction:column;animation:slideUp .35s ease;border-top:1px solid rgba(212,168,83,.15)}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--text);font-size:17px;font-weight:700;letter-spacing:1px}
+.cart-head button{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer}
+.cart-items{flex:1;overflow-y:auto;padding:10px 0;max-height:260px}
+.cart-item{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid rgba(255,255,255,.03)}
+.cart-item .ci-img{width:44px;height:68px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transform:scale(.5)}
+.cart-item .ci-info{flex:1}
+.cart-item .ci-name{font-size:13px;color:var(--text);font-weight:600}
+.cart-item .ci-price{font-size:15px;font-weight:700;color:var(--gold);margin-top:2px}
+.cart-item .qty-ctrl{display:flex;align-items:center;gap:10px}
+.cart-item .qty-ctrl button{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.cart-foot{padding:18px 22px;border-top:1px solid rgba(255,255,255,.06)}
+.cart-foot .total{display:flex;justify-content:space-between;font-size:17px;font-weight:700;color:var(--text);margin-bottom:14px}
+.cart-foot .total .amt{color:var(--gold);font-size:24px}
+
+/* Checkout */
+.chk-sec{background:var(--dark2);margin:0 16px 14px;border-radius:var(--radius);padding:18px;border:1px solid rgba(255,255,255,.04)}
+.chk-sec .chk-label{font-size:12px;font-weight:700;color:var(--gold);letter-spacing:3px;margin-bottom:12px;text-transform:uppercase}
+.chk-input{width:100%;padding:12px 14px;border:1px solid rgba(255,255,255,.08);border-radius:10px;font-size:14px;font-family:inherit;outline:none;margin-bottom:10px;background:var(--dark3);color:var(--text);transition:border .2s}
+.chk-input:focus{border-color:var(--gold)}
+.pay-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:2px solid rgba(255,255,255,.06);border-radius:12px;cursor:pointer;margin-bottom:8px;transition:all .3s}
+.pay-opt.active{border-color:var(--gold);background:rgba(212,168,83,.05)}
+.pay-opt .pay-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pay-opt.active .pay-dot{border-color:var(--gold)}
+.pay-opt.active .pay-dot::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--gold)}
+.pay-opt .pay-label{font-size:15px;font-weight:600;color:var(--text)}
+.qr-wrap{text-align:center;padding:24px 20px}
+.qr-wrap .qr-amt{font-size:28px;font-weight:900;color:var(--gold);margin-bottom:6px}
+.qr-wrap .qr-box{width:200px;height:200px;margin:0 auto 14px;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--dark3);border:1px solid rgba(255,255,255,.06)}
+.qr-wrap .qr-box img{width:100%;height:100%;object-fit:contain}
+.qr-wrap .qr-hint{font-size:12px;color:var(--text2);margin-bottom:14px}
+.upload-zone{border:2px dashed rgba(255,255,255,.1);border-radius:12px;padding:22px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-zone:hover{border-color:var(--gold)}
+.upload-zone img{max-width:100%;max-height:180px;border-radius:8px;display:none}
+.upload-zone .up-text{color:var(--text2);font-size:13px}
+
+/* Orders */
+.order-card{background:var(--dark2);border-radius:var(--radius);padding:18px;margin:0 16px 12px;border:1px solid rgba(255,255,255,.04)}
+.oc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.oc-id{font-size:11px;color:var(--text2)}
+.oc-status{font-size:11px;padding:4px 10px;border-radius:12px;font-weight:600;letter-spacing:1px}
+.oc-status.pending{background:rgba(200,160,0,.15);color:#c8a000}
+.oc-status.paid{background:rgba(39,174,96,.15);color:#27ae60}
+.oc-status.shipped{background:rgba(52,152,219,.15);color:#3498db}
+.oc-products{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:8px}
+.oc-total{font-size:20px;font-weight:700;color:var(--gold);text-align:right}
+.oc-actions{display:flex;gap:8px;margin-top:10px}
+.btn-sm{padding:8px 18px;border-radius:18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;letter-spacing:1px;transition:all .2s}
+.btn-sm.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none}
+.btn-sm.ghost{background:transparent;color:var(--text2);border:1px solid rgba(255,255,255,.1)}
+
+/* Admin */
+.admin-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);z-index:300;display:none;align-items:center;justify-content:center}
+.admin-overlay.open{display:flex}
+.admin-panel{width:430px;max-width:95vw;max-height:90vh;background:var(--dark2);border-radius:18px;overflow-y:auto;border:1px solid rgba(212,168,83,.2)}
+.admin-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:var(--dark2);z-index:1}
+.admin-head h3{color:var(--gold);font-size:16px;letter-spacing:2px}
+.admin-head button{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer}
+.admin-body{padding:16px 20px}
+.admin-body .fg{margin-bottom:12px}
+.admin-body .fg label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:4px;letter-spacing:2px}
+.admin-body .fg input,.admin-body .fg textarea,.admin-body .fg select{width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.08);border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:var(--dark3);color:var(--text);transition:border .2s}
+.admin-body .fg input:focus,.admin-body .fg textarea:focus,.admin-body .fg select:focus{border-color:var(--gold)}
+.admin-body .fg textarea{resize:vertical;min-height:60px}
+.admin-body .fg-row{display:flex;gap:8px}
+.admin-body .fg-row .fg{flex:1}
+.admin-pwd{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:310;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+.admin-pwd h3{color:var(--gold);letter-spacing:3px;font-size:18px}
+.admin-pwd input{padding:12px 18px;border-radius:26px;border:1px solid rgba(212,168,83,.3);background:var(--dark3);color:var(--text);font-size:16px;text-align:center;outline:none;letter-spacing:4px;font-family:inherit;width:200px}
+.admin-pwd input:focus{border-color:var(--gold)}
+.admin-pwd button{padding:12px 40px;border-radius:26px;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:700;font-size:15px;cursor:pointer;letter-spacing:2px;font-family:inherit}
+
+/* Toast */
+.toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.9);color:var(--gold);padding:12px 28px;border-radius:24px;font-size:13px;z-index:400;pointer-events:none;animation:toastIn .3s ease;letter-spacing:1px;border:1px solid rgba(212,168,83,.2)}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-50%) scale(.8)}}
+.empty{text-align:center;padding:60px;color:var(--text2)}
+.empty .icon{font-size:48px;margin-bottom:10px}
+.bottom-nav{flex-shrink:0;position:sticky;bottom:0;z-index:40;background:rgba(13,13,13,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);display:flex;padding:8px 0;padding-bottom:max(8px,env(safe-area-inset-bottom))}
+.bottom-nav .ni{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 0;cursor:pointer;color:var(--text2);transition:all .2s;font-size:10px;font-weight:500;gap:6px;letter-spacing:1px}
+.bottom-nav .ni .ni-icon{font-size:22px}
+.bottom-nav .ni.active{color:var(--gold)}
+.bottom-nav .ni .badge{position:absolute;top:0;right:50%;transform:translateX(22px);background:var(--red);color:#fff;font-size:10px;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:none;align-items:center;justify-content:center;padding:0 4px}
 </style>
 </head>
 <body>
-
 <div class="phone" id="app">
-  <div class="statusbar">酒巷 · 精选好酒</div>
   <div class="navbar">
-    <button class="back-btn" id="backBtn" onclick="goBack()">←</button>
-    <span class="title" id="navTitle">酒 巷</span>
-    <button class="nav-icon" onclick="toggleCart()">🛒<span class="badge" id="cartBadge">0</span></button>
-    <button class="nav-icon" onclick="navigateTo('orders')" style="font-size:20px;">📋</button>
+    <span class="logo" onclick="logoClick()">酒 巷</span>
+    <div class="spacer"></div>
+    <button class="nav-btn" onclick="toggleCart()">🛒<span class="badge" id="cartBadge">0</span></button>
+    <button class="nav-btn" onclick="navTo('orders')">📋</button>
   </div>
 
-  <div class="page active" id="page-home">
-    <div class="search-bar"><span style="color:#ccc;font-size:18px;margin-right:6px;">🔍</span><input type="text" placeholder="搜索美酒..." oninput="renderHome(this.value)"></div>
+  <div class="page active" id="pg-home">
+    <div class="search-wrap"><div class="search-box"><span class="s-icon">🔍</span><input type="text" placeholder="搜索美酒..." oninput="renderHome(this.value)"></div></div>
     <div id="homeContent"></div>
   </div>
-  <div class="page" id="page-checkout"><div style="padding-top:16px;" id="checkoutContent"></div></div>
-  <div class="page" id="page-orders"><div style="padding-top:16px;" id="ordersContent"></div></div>
-  <div class="page" id="page-settings"><div style="padding-top:16px;" id="settingsContent"></div></div>
+  <div class="page" id="pg-checkout"><div style="padding-top:16px" id="chkContent"></div></div>
+  <div class="page" id="pg-orders"><div style="padding-top:16px" id="ordContent"></div></div>
 
   <div class="bottom-nav">
-    <div class="nav-item active" id="nav-home"><span class="ni-icon">🏠</span>首页</div>
-    <div class="nav-item" id="nav-orders"><span class="ni-icon">📋</span>订单</div>
-    <div class="nav-item" id="nav-cart" onclick="toggleCart()"><span class="ni-icon">🛒</span>购物车<span class="badge" id="navCartBadge">0</span></div>
-    <div class="nav-item" id="nav-settings"><span class="ni-icon">⚙️</span>设置</div>
+    <div class="ni active" id="ni-home"><span class="ni-icon">🏠</span>首页</div>
+    <div class="ni" id="ni-orders"><span class="ni-icon">📋</span>订单</div>
+    <div class="ni" id="ni-cart" onclick="toggleCart()"><span class="ni-icon">🛒</span>购物车<span class="badge" id="niCartBadge">0</span></div>
+    <div class="ni" id="ni-admin" onclick="showAdminLogin()"><span class="ni-icon">⚙️</span>管理</div>
   </div>
 </div>
 
 <div class="modal-overlay" id="detailOverlay" onclick="if(event.target===this)closeDetail()"></div>
-<div class="cart-overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()">
-  <div class="cart-drawer" id="cartDrawer"></div>
-</div>
+<div class="cart-overlay" id="cartOverlay" onclick="if(event.target===this)closeCart()"><div class="cart-drawer" id="cartDrawer"></div></div>
+<div class="admin-overlay" id="adminOverlay"><div id="adminContent"></div></div>
+<div class="admin-pwd" id="adminPwd" style="display:none"><h3>管理员登录</h3><input type="password" id="pwdInput" placeholder="输入密码" onkeydown="if(event.key==='Enter')checkPwd()"><button onclick="checkPwd()">进入后台</button><button style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:13px;letter-spacing:1px;margin-top:8px" onclick="document.getElementById('adminPwd').style.display='none';document.getElementById('adminOverlay').classList.remove('open')">取消</button></div>
 
 <script>
-// ============ 商品数据：名酒官网半价 ============
+// ============ 产品数据 ============
 var products = [
-  // 白酒
-  { id:1,  name:'飞天茅台 53度 酱香型 500ml', cat:'白酒', price:799, orig:1499, alc:'53%', vol:'500ml', tag:'爆款', b:'maotai', brand:'茅台', btype:'飞天', bcolor:'#c41e2a', btext:'#ffd700', rank:4.9, sales:8600, desc:'茅台镇核心产区，12987传统工艺酿造。酒体微黄透明，酱香突出，幽雅细腻，回味悠长。官方价¥1499，本店¥799。' },
-  { id:2,  name:'五粮液 第八代普五 52度 浓香型 500ml', cat:'白酒', price:729, orig:1399, alc:'52%', vol:'500ml', tag:'热卖', b:'wuliangye', brand:'五粮液', btype:'普五', bcolor:'#d4213d', btext:'#ffd700', rank:4.8, sales:12000, desc:'五粮酿造：高粱、大米、糯米、小麦、玉米。陈年老窖发酵，香气悠久，入口甘美。官方价¥1399，本店¥729。' },
-  { id:3,  name:'剑南春 水晶剑 52度浓香型 500ml', cat:'白酒', price:268, orig:499, alc:'52%', vol:'500ml', tag:'性价比', b:'jiannanchun', brand:'剑南春', btype:'水晶剑', bcolor:'#c8102e', btext:'#ffd700', rank:4.7, sales:25000, desc:'四川绵竹产区，千年老窖万年糟。酒液晶莹剔透，入口绵柔甘洌，饮后余香。官方价¥499，本店¥268。' },
-  { id:4,  name:'郎酒 红花郎10 53度酱香型 500ml', cat:'白酒', price:229, orig:458, alc:'53%', vol:'500ml', tag:'婚宴', b:'langjiu', brand:'郎酒', btype:'红花郎', bcolor:'#d4212a', btext:'#ffd700', rank:4.7, sales:18000, desc:'赤水河畔二郎镇，酱香突出，醇厚净爽。红色瓶身喜庆大气，宴请首选。官方价¥458，本店¥229。' },
-  { id:5,  name:'国窖1573 52度 浓香型白酒 500ml', cat:'白酒', price:599, orig:1199, alc:'52%', vol:'500ml', tag:'高端', b:'wuliangye', brand:'泸州老窖', btype:'国窖1573', bcolor:'#c41e2a', btext:'#ffd700', rank:4.9, sales:9500, desc:'1573国宝窖池群酿造，440余年历史。窖香浓郁，绵甜爽净，余味悠长。官方价¥1199，本店¥599。' },
-  { id:6,  name:'洋河 梦之蓝M3 52度 绵柔型 500ml', cat:'白酒', price:329, orig:659, alc:'52%', vol:'500ml', tag:'送礼', b:'jiannanchun', brand:'洋河', btype:'梦之蓝M3', bcolor:'#1e3a5f', btext:'#fff', rank:4.8, sales:22000, desc:'洋河蓝色经典，绵柔型白酒开创者。入口绵柔顺滑，饮后舒适不上头。官方价¥659，本店¥329。' },
-  { id:7,  name:'茅台王子酒 金王子 53度 500ml', cat:'白酒', price:139, orig:258, alc:'53%', vol:'500ml', tag:'口粮', b:'maotai', brand:'茅台', btype:'金王子', bcolor:'#b8860b', btext:'#ffd700', rank:4.6, sales:35000, desc:'茅台嫡系产品，继承茅台工艺。酱香明显，入口舒适，日常饮用好选择。官方价¥258，本店¥139。' },
-  { id:8,  name:'茅台1935 53度 酱香型白酒 500ml', cat:'白酒', price:629, orig:1188, alc:'53%', vol:'500ml', tag:'新品', b:'maotai', brand:'茅台', btype:'1935', bcolor:'#8b0000', btext:'#ffd700', rank:4.7, sales:15000, desc:'纪念1935年茅台前身烧房获奖，茅台家族中坚力量。酱香典雅，适合品鉴。官方价¥1188，本店¥629。' },
-  // 红酒
-  { id:10, name:'拉菲传奇 波尔多干红葡萄酒 750ml', cat:'红酒', price:159, orig:298, alc:'13%', vol:'750ml', tag:'进口', b:'wine', brand:'LAFITE', btype:'波尔多', bcolor:'#1a3a1a', btext:'#f5f0e8', rank:4.6, sales:5600, desc:'波尔多经典混酿，赤霞珠与梅洛完美配比。黑加仑与雪松香气，单宁丝滑。官方价¥298，本店¥159。' },
-  { id:11, name:'奔富BIN389 赤霞珠设拉子干红 750ml', cat:'红酒', price:309, orig:599, alc:'14.5%', vol:'750ml', tag:'澳洲', b:'wine', brand:'Penfolds', btype:'BIN389', bcolor:'#6b0000', btext:'#f5f0e8', rank:4.8, sales:8900, desc:'南澳产区标杆，赤霞珠与设拉子跨产区混酿。黑莓、黑巧克力风味，陈年潜力佳。官方价¥599，本店¥309。' },
-  { id:12, name:'蒙特斯紫天使 佳美娜干红 750ml', cat:'红酒', price:199, orig:398, alc:'14%', vol:'750ml', tag:'高分', b:'wine', brand:'MONTES', btype:'紫天使', bcolor:'#4a0a4a', btext:'#f5f0e8', rank:4.7, sales:7200, desc:'智利科尔查瓜谷，国宝级佳美娜。紫罗兰花香，黑樱桃与香料风味，JS93分。官方价¥398，本店¥199。' },
-  { id:13, name:'张裕解百纳 特选级干红 750ml', cat:'红酒', price:55, orig:108, alc:'13%', vol:'750ml', tag:'国货', b:'wine', brand:'张裕', btype:'解百纳', bcolor:'#6b2f1a', btext:'#f5f0e8', rank:4.5, sales:68000, desc:'中国葡萄酒标杆，烟台产区。蛇龙珠葡萄，果香馥郁，日常佐餐首选。官方价¥108，本店¥55。' },
-  // 洋酒
-  { id:15, name:'山崎1923 单一麦芽日本威士忌 700ml', cat:'洋酒', price:679, orig:1280, alc:'43%', vol:'700ml', tag:'收藏', b:'spirit', brand:'山崎', btype:'1923', bcolor:'#d4a860', btext:'#1a1a1a', rank:4.9, sales:3200, desc:'三得利山崎蒸馏所，水楢桶熟成。蜂蜜、干果、檀香交织，东方韵味。官方价¥1280，本店¥679。' },
-  { id:16, name:'人头马CLUB 优质香槟区干邑 700ml', cat:'洋酒', price:359, orig:699, alc:'40%', vol:'700ml', tag:'送礼', b:'spirit', brand:'RemyMartin', btype:'CLUB', bcolor:'#c8a040', btext:'#1a1a1a', rank:4.7, sales:9800, desc:'法国干邑区，陈年生命之水调配。杏干、肉桂、烤杏仁香气，余韵悠长。官方价¥699，本店¥359。' },
-  { id:17, name:'格兰菲迪12年 单一麦芽威士忌 700ml', cat:'洋酒', price:175, orig:358, alc:'40%', vol:'700ml', tag:'入门', b:'spirit', brand:'Glenfiddich', btype:'12年', bcolor:'#5a8a3a', btext:'#1a1a1a', rank:4.8, sales:22000, desc:'苏格兰斯佩塞，标志性三角瓶。梨香与橡木味平衡，全球销量领先。官方价¥358，本店¥175。' },
-  { id:18, name:'麦卡伦12年 雪莉桶单一麦芽 700ml', cat:'洋酒', price:319, orig:628, alc:'40%', vol:'700ml', tag:'经典', b:'spirit', brand:'Macallan', btype:'12年雪莉', bcolor:'#8b4513', btext:'#1a1a1a', rank:4.9, sales:15000, desc:'苏格兰斯佩塞，纯雪莉桶熟成。干果、巧克力、香料风味，威士忌中的劳斯莱斯。官方价¥628，本店¥319。' },
-  // 啤酒
-  { id:20, name:'青岛啤酒经典1903 500ml×12罐', cat:'啤酒', price:36, orig:69, alc:'4.3%', vol:'500ml×12', tag:'囤货', b:'beer', brand:'青岛', btype:'经典1903', bcolor:'#1a6e1a', btext:'#fff', rank:4.8, sales:50000, desc:'百年酵母，百年工艺。麦香浓郁，口感醇厚，国货经典。官方价¥69，本店¥36。' },
-  { id:21, name:'福佳白啤酒 比利时小麦 330ml×6', cat:'啤酒', price:42, orig:79, alc:'4.9%', vol:'330ml×6', tag:'进口', b:'beer', brand:'Hoegaarden', btype:'白啤', bcolor:'#f5f0e0', btext:'#333', rank:4.7, sales:32000, desc:'比利时经典白啤，陈皮与芫荽籽带来柑橘清香。云雾状酒体，清爽顺滑。官方价¥79，本店¥42。' },
-  { id:22, name:'百威金樽 大师臻藏 330ml×12', cat:'啤酒', price:66, orig:128, alc:'5.0%', vol:'330ml×12', tag:'高端', b:'beer', brand:'百威', btype:'金樽', bcolor:'#c8a020', btext:'#fff', rank:4.6, sales:18000, desc:'精选麦芽与酒花，大师匠心酿造。泡沫绵密，口感丝滑。官方价¥128，本店¥66。' },
-  // 清酒
-  { id:24, name:'獭祭 纯米大吟酿45 山田锦 720ml', cat:'清酒', price:189, orig:358, alc:'16%', vol:'720ml', tag:'日本', b:'sake', brand:'獭祭', btype:'大吟酿45', bcolor:'#1a1a2e', btext:'#fff', rank:4.9, sales:4500, desc:'山口县旭酒造，精米步合45%。蜜瓜与白桃果香，口感清澈，世界级清酒。官方价¥358，本店¥189。' },
-  { id:25, name:'菊正宗 纯米樽酒 1.8L 日本原装', cat:'清酒', price:105, orig:208, alc:'15%', vol:'1.8L', tag:'大瓶', b:'sake', brand:'菊正宗', btype:'樽酒', bcolor:'#2d5a1e', btext:'#fff', rank:4.5, sales:12800, desc:'神户滩五乡传统酿造，杉木桶储存。辛口风格，温饮冷饮皆宜。官方价¥208，本店¥105。' },
-  // 礼盒
-  { id:27, name:'酒巷甄选 双支礼品酒礼盒', cat:'礼盒', price:368, orig:688, alc:'52%', vol:'500ml×2', tag:'送礼', b:'gift', brand:'酒巷', btype:'甄选礼盒', bcolor:'#ffd700', btext:'#ffd700', rank:4.9, sales:6200, desc:'精选两款名酒配搭，金色礼盒包装。配赠手提袋，送长辈送客户面面俱到。' },
+  {id:1,name:'飞天茅台 53度 酱香型 500ml',cat:'白酒',price:799,orig:1499,alc:'53%',vol:'500ml',tag:'爆款',b:'maotai',brand:'茅台',btype:'飞天',bcolor:'#c41e2a',btext:'#ffd700',rank:4.9,sales:8600,desc:'茅台镇核心产区，12987传统工艺酿造。酒体微黄透明，酱香突出，幽雅细腻，回味悠长。官方价¥1499，本店¥799。'},
+  {id:2,name:'五粮液 第八代普五 52度 浓香型 500ml',cat:'白酒',price:729,orig:1399,alc:'52%',vol:'500ml',tag:'热卖',b:'wuliangye',brand:'五粮液',btype:'普五',bcolor:'#d4213d',btext:'#ffd700',rank:4.8,sales:12000,desc:'五粮酿造：高粱、大米、糯米、小麦、玉米。陈年老窖发酵，香气悠久，入口甘美。官方价¥1399，本店¥729。'},
+  {id:3,name:'剑南春 水晶剑 52度浓香型 500ml',cat:'白酒',price:268,orig:499,alc:'52%',vol:'500ml',tag:'性价比',b:'jiannanchun',brand:'剑南春',btype:'水晶剑',bcolor:'#c8102e',btext:'#ffd700',rank:4.7,sales:25000,desc:'四川绵竹产区，千年老窖万年糟。酒液晶莹剔透，入口绵柔甘洌。官方价¥499，本店¥268。'},
+  {id:4,name:'郎酒 红花郎10 53度酱香型 500ml',cat:'白酒',price:229,orig:458,alc:'53%',vol:'500ml',tag:'婚宴',b:'langjiu',brand:'郎酒',btype:'红花郎',bcolor:'#d4212a',btext:'#ffd700',rank:4.7,sales:18000,desc:'赤水河畔二郎镇，酱香突出，醇厚净爽。红色瓶身喜庆大气。官方价¥458，本店¥229。'},
+  {id:5,name:'国窖1573 52度 浓香型 500ml',cat:'白酒',price:599,orig:1199,alc:'52%',vol:'500ml',tag:'高端',b:'wuliangye',brand:'泸州老窖',btype:'国窖1573',bcolor:'#c41e2a',btext:'#ffd700',rank:4.9,sales:9500,desc:'1573国宝窖池群酿造，440余年历史。窖香浓郁，绵甜爽净。官方价¥1199，本店¥599。'},
+  {id:6,name:'拉菲传奇 波尔多干红 750ml',cat:'红酒',price:159,orig:298,alc:'13%',vol:'750ml',tag:'进口',b:'wine',brand:'LAFITE',btype:'波尔多',bcolor:'#1a3a1a',btext:'#f5f0e8',rank:4.6,sales:5600,desc:'波尔多经典混酿，赤霞珠与梅洛完美配比。黑加仑与雪松香气，单宁丝滑。'},
+  {id:7,name:'奔富BIN389 赤霞珠设拉子干红 750ml',cat:'红酒',price:309,orig:599,alc:'14.5%',vol:'750ml',tag:'澳洲',b:'wine',brand:'Penfolds',btype:'BIN389',bcolor:'#6b0000',btext:'#f5f0e8',rank:4.8,sales:8900,desc:'南澳产区标杆，黑莓与黑巧克力风味，陈年潜力佳。官方价¥599，本店¥309。'},
+  {id:8,name:'山崎1923 单一麦芽日本威士忌 700ml',cat:'洋酒',price:679,orig:1280,alc:'43%',vol:'700ml',tag:'收藏',b:'spirit',brand:'山崎',btype:'1923',bcolor:'#d4a860',btext:'#1a1a1a',rank:4.9,sales:3200,desc:'三得利山崎蒸馏所，水楢桶熟成。蜂蜜、干果、檀香交织，东方韵味。官方价¥1280，本店¥679。'},
+  {id:9,name:'青岛啤酒经典1903 500ml×12罐',cat:'啤酒',price:36,orig:69,alc:'4.3%',vol:'500ml×12',tag:'囤货',b:'beer',brand:'青岛',btype:'经典1903',bcolor:'#1a6e1a',btext:'#fff',rank:4.8,sales:50000,desc:'百年酵母，百年工艺。麦香浓郁，口感醇厚，国货经典。官方价¥69，本店¥36。'},
+  {id:10,name:'獭祭 纯米大吟酿45 山田锦 720ml',cat:'清酒',price:189,orig:358,alc:'16%',vol:'720ml',tag:'日本',b:'sake',brand:'獭祭',btype:'大吟酿45',bcolor:'#1a1a2e',btext:'#fff',rank:4.9,sales:4500,desc:'山口县旭酒造，精米步合45%。蜜瓜与白桃果香，口感清澈，世界级清酒。'},
+  {id:11,name:'麦卡伦12年 雪莉桶单一麦芽 700ml',cat:'洋酒',price:319,orig:628,alc:'40%',vol:'700ml',tag:'经典',b:'spirit',brand:'Macallan',btype:'12年雪莉',bcolor:'#8b4513',btext:'#1a1a1a',rank:4.9,sales:15000,desc:'苏格兰斯佩塞，纯雪莉桶熟成。干果、巧克力、香料风味。官方价¥628，本店¥319。'},
+  {id:12,name:'酒巷甄选 双支礼品酒礼盒',cat:'礼盒',price:368,orig:688,alc:'52%',vol:'500ml×2',tag:'送礼',b:'gift',brand:'酒巷',btype:'甄选礼盒',bcolor:'#ffd700',btext:'#ffd700',rank:4.9,sales:6200,desc:'精选两款名酒配搭，金色礼盒包装。配赠手提袋，送长辈送客户面面俱到。'},
 ];
 
-// ============ CSS 瓶身渲染 ============
-function renderBottle(p, large) {
-  var cls = 'bottle-wrap b-' + (p.b||'maotai') + (large ? ' large' : '');
-  var capStyle = '';
-  if (p.b === 'beer') capStyle = 'background:' + p.bcolor;
-  else if (p.b === 'gift') capStyle = 'background:linear-gradient(180deg,#ffd700,#c8a020)';
-  var labelStyle = '';
-  if (p.b === 'beer' || p.b === 'sake') labelStyle = 'background:' + p.bcolor + ';color:' + (p.btext||'#fff');
-  else if (p.b === 'gift') labelStyle = 'background:rgba(0,0,0,.4);color:#ffd700';
-  return '<div class="'+cls+'">'
-    + '<div class="bottle-cap" style="'+capStyle+'"></div>'
-    + '<div class="bottle-neck"></div>'
-    + '<div class="bottle-body"><div class="bottle-label" style="'+labelStyle+'">'
-    + '<span class="bl-brand" style="color:'+(p.btext||'')+'">'+escHtml(p.brand)+'</span>'
-    + '<span class="bl-type">'+escHtml(p.btype)+'</span>'
-    + '<span class="bl-alc">'+p.alc+'</span>'
-    + '</div></div></div>';
-}
-
-function bottleBg(p) {
-  var m = {
-    maotai:'linear-gradient(135deg,#faf8f5,#e8ddd0)',
-    wuliangye:'linear-gradient(135deg,#faf8fa,#e8e0f0)',
-    jiannanchun:'linear-gradient(135deg,#f5f5fa,#e0e0ee)',
-    langjiu:'linear-gradient(135deg,#faf5f5,#e8d8d8)',
-    wine:'linear-gradient(135deg,#1a1020,#2d1528)',
-    spirit:'linear-gradient(135deg,#1a1408,#2d1f10)',
-    beer:'linear-gradient(135deg,#f7f3e0,#e8d880)',
-    sake:'linear-gradient(135deg,#f5f0f8,#e0d5e8)',
-    gift:'linear-gradient(135deg,#1a0a0a,#2d1010)'
-  };
-  return m[p.b] || 'linear-gradient(135deg,#f5f1eb,#e0d8cc)';
-}
-
 // ============ 状态 ============
-var cart = [], currentCat = '全部', currentFilter = '', pageHistory = ['home'];
-var paymentMethod = 'wechat', paymentProofData = null;
-var settings = { wechatQr:'', alipayQr:'', shopName:'酒巷精选', contactPhone:'', notice:'下单后请扫码付款，并上传付款截图，我们会尽快发货。' };
+var cart=[],currentCat='全部',currentFilter='',pageHistory=['home'];
+var paymentMethod='wechat',paymentProofData=null;
+var adminPassword='admin888';
+var ghToken='';
+var ghRepo='Xfw939/jiuxiang';
+var giteeToken='';
+var giteeRepo='xiong-fuwei/jiuxiang';
+var settings={wechatQr:'',alipayQr:'',shopName:'酒巷精选',contactPhone:''};
 
-function loadSettings(){ try{var s=JSON.parse(localStorage.getItem('jiuxiang_settings'));if(s)settings=s;}catch(e){} }
-function saveSettings(){ localStorage.setItem('jiuxiang_settings',JSON.stringify(settings)); }
-function getOrders(){ try{return JSON.parse(localStorage.getItem('jiuxiang_orders'))||[];}catch(e){return[];} }
-function saveOrders(o){ localStorage.setItem('jiuxiang_orders',JSON.stringify(o)); }
+// ============ 数据持久化 ============
+function loadProducts(){try{var d=JSON.parse(localStorage.getItem('jxp_products'));if(d&&d.length)products=d;return!!d}catch(e){return false}}
+function saveProducts(){localStorage.setItem('jxp_products',JSON.stringify(products))}
+function loadSettings(){try{var s=JSON.parse(localStorage.getItem('jxp_settings'));if(s)settings=s}catch(e){}}
+function saveSettings(){localStorage.setItem('jxp_settings',JSON.stringify(settings))}
+function loadTokens(){try{var t=JSON.parse(localStorage.getItem('jxp_tokens'));if(t){if(t.ghToken)ghToken=t.ghToken;if(t.giteeToken)giteeToken=t.giteeToken;if(t.adminPassword)adminPassword=t.adminPassword}}catch(e){}}
+function saveTokens(){localStorage.setItem('jxp_tokens',JSON.stringify({ghToken:ghToken,giteeToken:giteeToken,adminPassword:adminPassword}))}
+function getOrders(){try{return JSON.parse(localStorage.getItem('jxp_orders'))||[]}catch(e){return[]}}
+function saveOrders(o){localStorage.setItem('jxp_orders',JSON.stringify(o))}
 
 // ============ 导航 ============
-function navigateTo(page){
-  pageHistory.push(page);
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  var el=document.getElementById('page-'+page); if(el) el.classList.add('active');
-  var bb=document.getElementById('backBtn'), t=document.getElementById('navTitle');
-  if(page==='home'){ bb.style.display='none'; t.textContent='酒 巷'; }
-  else { bb.style.display='block'; var titles={checkout:'确认订单',orders:'我的订单',settings:'店铺设置'}; t.textContent=titles[page]||''; }
-  document.querySelectorAll('.bottom-nav .nav-item').forEach(function(n){n.classList.remove('active');});
-  var m={home:'nav-home',orders:'nav-orders',settings:'nav-settings'};
-  var a=m[page]; if(a) document.getElementById(a).classList.add('active');
-  if(page==='checkout') renderCheckout();
-  if(page==='orders') renderOrders();
-  if(page==='settings') renderSettings();
-  if(page==='home'){ renderHome(); document.getElementById('page-home').scrollIntoView(); }
+function navTo(pg){
+  pageHistory.push(pg);
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  var el=document.getElementById('pg-'+pg);if(el)el.classList.add('active');
+  document.querySelectorAll('.bottom-nav .ni').forEach(function(n){n.classList.remove('active')});
+  var m={home:'ni-home',orders:'ni-orders'};var a=m[pg];if(a)document.getElementById(a).classList.add('active');
+  if(pg==='checkout')renderCheckout();
+  if(pg==='orders')renderOrders();
+  if(pg==='home'){renderHome();document.getElementById('pg-home').scrollIntoView()}
 }
-function goBack(){
-  if(pageHistory.length<=1) return;
-  pageHistory.pop(); var prev=pageHistory[pageHistory.length-1]; pageHistory.pop(); navigateTo(prev);
+function goBack(){if(pageHistory.length<=1)return;pageHistory.pop();var p=pageHistory.pop();navTo(p)}
+
+// ============ 渲染工具 ============
+function renderBottle(p,lg){
+  var cls='b-wrap b-'+p.b+(lg?' large':'');
+  var cs='',ls='';
+  if(p.b==='beer'){cs='background:'+p.bcolor;ls='background:'+p.bcolor+';color:'+(p.btext||'#fff')}
+  else if(p.b==='gift'){cs='background:linear-gradient(180deg,#ffd700,#c8a020)';ls='background:rgba(0,0,0,.4);color:#ffd700'}
+  return '<div class="'+cls+'"><div class="b-cap" style="'+cs+'"></div><div class="b-neck"></div><div class="b-body"><div class="b-label" style="'+ls+'"><span class="bl-b" style="color:'+(p.btext||'')+'">'+escHtml(p.brand)+'</span><span class="bl-t">'+escHtml(p.btype)+'</span><span class="bl-a">'+p.alc+'</span></div></div></div>'
+}
+function bottleBg(p){
+  var m={maotai:'linear-gradient(135deg,#1a1208,#2d1f0e)',wuliangye:'linear-gradient(135deg,#141218,#221a28)',jiannanchun:'linear-gradient(135deg,#101420,#1a1e2a)',langjiu:'linear-gradient(135deg,#1a0a0a,#2d1010)',wine:'linear-gradient(135deg,#0a1008,#0d1a10)',spirit:'linear-gradient(135deg,#100c04,#1a1408)',beer:'linear-gradient(135deg,#0a1004,#141a08)',sake:'linear-gradient(135deg,#0c0c14,#141022)',gift:'linear-gradient(135deg,#100804,#1a0c04)'};
+  return m[p.b]||'linear-gradient(135deg,#111,#1a1a1a)'
 }
 
 // ============ 首页 ============
 function renderHome(filter){
-  if(filter!==undefined) currentFilter=filter;
+  if(filter!==undefined)currentFilter=filter;
   var list=getFiltered();
   var cats=['全部','白酒','红酒','啤酒','洋酒','清酒','礼盒'];
-  var hotIds=[1,2,3,10,15,20,24,27];
-  var hot=products.filter(function(p){return hotIds.indexOf(p.id)!==-1;});
-  var html='<div class="banner"><div class="banner-text"><div class="b-title">陈年佳酿<br>岁月留香</div><div class="b-sub">精选全球好酒 · 正品保障 · 官网半价</div></div></div>';
-  html+='<div class="cats">';
-  cats.forEach(function(c){html+='<div class="cat-chip'+(c===currentCat?' active':'')+'" onclick="switchCat(\''+c+'\')">'+(c==='全部'?'🔥 全部':c)+'</div>';});
-  html+='</div>';
-  if(currentCat==='全部'&&!currentFilter){
-    html+='<div class="sec-title">🔥 热销推荐</div><div class="grid">';
-    hot.forEach(function(p){html+=productCard(p);});
-    html+='</div><div class="sec-title">📦 全部美酒</div>';
-  }
-  if(list.length===0){html+='<div class="empty"><div class="icon">🍷</div>没有找到相关商品</div>';}
-  else{html+='<div class="grid">';list.forEach(function(p){html+=productCard(p);});html+='</div>';}
-  html+='<div style="text-align:center;padding:30px 20px;color:#ccc;font-size:12px;">— 美酒虽好 请勿贪杯 —</div>';
-  document.getElementById('homeContent').innerHTML=html;
+  var hotIds=[1,2,3,6,8,9,10,12],hot=products.filter(function(p){return hotIds.indexOf(p.id)!==-1});
+  var h='<div class="hero"><div class="hero-text"><h2>陈年佳酿<br>岁月留香</h2><p>精选全球好酒 · 官网半价 · 正品保障</p></div></div>';
+  h+='<div class="cats">';
+  cats.forEach(function(c){h+='<div class="cat-chip'+(c===currentCat?' active':'')+'" onclick="switchCat(\''+c+'\')">'+(c==='全部'?'🔥 全部':c)+'</div>'});
+  h+='</div>';
+  if(currentCat==='全部'&&!currentFilter){h+='<div class="sec-title">🔥 热销推荐</div><div class="grid">';hot.forEach(function(p){h+=card(p)});h+='</div><div class="sec-title">📦 全部美酒</div>'}
+  if(list.length===0)h+='<div class="empty"><div class="icon">🍷</div>未找到商品</div>';
+  else{h+='<div class="grid">';list.forEach(function(p){h+=card(p)});h+='</div>'}
+  h+='<div style="text-align:center;padding:30px 20px;color:var(--text2);font-size:12px;letter-spacing:2px">— 美酒虽好 请勿贪杯 —</div>';
+  document.getElementById('homeContent').innerHTML=h
 }
-function getFiltered(){
-  return products.filter(function(p){
-    if(currentCat!=='全部'&&p.cat!==currentCat) return false;
-    if(currentFilter&&p.name.indexOf(currentFilter)===-1&&p.cat.indexOf(currentFilter)===-1) return false;
-    return true;
-  });
-}
-function switchCat(cat){currentCat=cat;renderHome();}
-
-function productCard(p){
-  return '<div class="product-card" onclick="openDetail('+p.id+')">'
-    +'<div class="img" style="background:'+bottleBg(p)+';">'+renderBottle(p,false)
-    +(p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div>'
-    +'<div class="info"><div class="name">'+escHtml(p.name)+'</div>'
-    +'<div class="meta">'+p.alc+' · '+p.vol+' · 已售'+fmtNum(p.sales)+'</div>'
-    +'<div class="price-row"><span class="price"><span style="font-size:14px;">¥</span>'+p.price+'</span>'
-    +'<button class="add-btn" onclick="event.stopPropagation();addToCart('+p.id+')">+</button></div></div></div>';
+function getFiltered(){return products.filter(function(p){if(currentCat!=='全部'&&p.cat!==currentCat)return false;if(currentFilter&&p.name.indexOf(currentFilter)===-1&&p.cat.indexOf(currentFilter)===-1)return false;return true})}
+function switchCat(cat){currentCat=cat;renderHome()}
+function card(p){
+  return '<div class="card" onclick="openDetail('+p.id+')"><div class="img" style="background:'+bottleBg(p)+'">'+renderBottle(p,false)+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div><div class="info"><div class="name">'+escHtml(p.name)+'</div><div class="meta">'+p.alc+' · '+p.vol+' · 已售'+fmtNum(p.sales)+'</div><div class="price-row"><span class="price">¥'+p.price+'</span><button class="add-btn" onclick="event.stopPropagation();addToCart('+p.id+')">+</button></div></div></div>'
 }
 
-// ============ 详情弹窗 ============
+// ============ 详情 ============
 function openDetail(id){
-  var p=products.find(function(p){return p.id===id;});if(!p)return;
-  var overlay=document.getElementById('detailOverlay');
-  overlay.innerHTML='<div class="modal"><div class="detail-img" style="background:'+bottleBg(p)+';">'
-    +'<button class="close-btn" onclick="closeDetail()">✕</button>'+renderBottle(p,true)+'</div>'
-    +'<div class="detail-body"><div class="detail-name">'+escHtml(p.name)+'</div>'
-    +'<div class="detail-meta">'+p.alc+' · '+p.vol+' · 评分 '+p.rank+' · 已售 '+fmtNum(p.sales)+'</div>'
-    +'<div class="detail-price">¥'+p.price+'</div>'
-    +(p.orig>p.price?'<div class="detail-orig">官网价 ¥'+p.orig+'</div>':'')
-    +'<div class="detail-desc">'+p.desc+'</div>'
-    +'<div class="detail-actions"><button class="btn-buy cart" onclick="addToCart('+p.id+');closeDetail();">加入购物车</button>'
-    +'<button class="btn-buy now" onclick="addToCart('+p.id+');closeDetail();buyNow();">立即购买</button></div></div></div>';
-  overlay.classList.add('open');
+  var p=products.find(function(p){return p.id===id});if(!p)return;
+  var ov=document.getElementById('detailOverlay');
+  ov.innerHTML='<div class="modal"><div class="d-img" style="background:'+bottleBg(p)+'"><button class="close" onclick="closeDetail()">✕</button>'+renderBottleLarge(p)+'</div><div class="d-body"><div class="d-name">'+escHtml(p.name)+'</div><div class="d-meta">'+p.alc+' · '+p.vol+' · 评分 '+p.rank+' · 已售 '+fmtNum(p.sales)+'</div><div class="d-price">¥'+p.price+'</div>'+(p.orig>p.price?'<div class="d-orig">官网价 ¥'+p.orig+'</div>':'')+'<div class="d-desc">'+p.desc+'</div><div class="d-actions"><button class="btn btn-out" onclick="addToCart('+p.id+');closeDetail()">🛒 加入购物车</button><button class="btn btn-gold" onclick="addToCart('+p.id+');closeDetail();buyNow()">⚡ 立即购买</button></div></div></div>';
+  ov.classList.add('open')
 }
-function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
+function renderBottleLarge(p){return renderBottle(p,false).replace('b-wrap','b-wrap').replace('width:85px;height:135px','width:130px;height:210px').replace('b-body','b-body').replace('width:58px;height:95px','width:90px;height:150px;border-radius:20px 20px 8px 8px').replace('b-label','b-label').replace('26px','40px').replace('18px','28px').replace('b-neck','b-neck').replace('width:22px;height:18px','width:34px;height:28px').replace('b-cap','b-cap').replace('width:26px;height:13px','width:40px;height:20px').replace('bl-b','bl-b').replace('font-size:8px','font-size:13px').replace('bl-t','bl-t').replace('font-size:6px','font-size:9px').replace('bl-a','bl-a').replace('font-size:7px','font-size:10px')}
+function closeDetail(){document.getElementById('detailOverlay').classList.remove('open')}
 
 // ============ 购物车 ============
-function addToCart(id){
-  var existing=cart.find(function(c){return c.id===id;});
-  if(existing){existing.qty++;}
-  else{var p=products.find(function(p){return p.id===id;});if(p)cart.push({id:p.id,name:p.name,price:p.price,b:p.b,brand:p.brand,btype:p.btype,bcolor:p.bcolor,btext:p.btext,alc:p.alc,qty:1});}
-  updateCartBadge();toast('已加入购物车');
-}
-function removeFromCart(id){cart=cart.filter(function(c){return c.id!==id;});updateCartBadge();renderCart();}
-function changeQty(id,d){var item=cart.find(function(c){return c.id===id;});if(!item)return;item.qty+=d;if(item.qty<=0){removeFromCart(id);return;}updateCartBadge();renderCart();}
-function updateCartBadge(){
-  var count=cart.reduce(function(s,c){return s+c.qty;},0);
-  document.getElementById('cartBadge').textContent=count;document.getElementById('cartBadge').style.display=count>0?'flex':'none';
-  var nb=document.getElementById('navCartBadge');if(nb){nb.textContent=count;nb.style.display=count>0?'flex':'none';}
-}
-function toggleCart(){openCart();}
-function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('open');}
-function closeCart(){document.getElementById('cartOverlay').classList.remove('open');}
+function addToCart(id){var e=cart.find(function(c){return c.id===id});if(e)e.qty++;else{var p=products.find(function(p){return p.id===id});if(p)cart.push({id:p.id,name:p.name,price:p.price,b:p.b,brand:p.brand,btype:p.btype,bcolor:p.bcolor,btext:p.btext,alc:p.alc,qty:1})}updateCartBadge();toast('已加入购物车')}
+function removeFromCart(id){cart=cart.filter(function(c){return c.id!==id});updateCartBadge();renderCart()}
+function changeQty(id,d){var it=cart.find(function(c){return c.id===id});if(!it)return;it.qty+=d;if(it.qty<=0){removeFromCart(id);return}updateCartBadge();renderCart()}
+function updateCartBadge(){var n=cart.reduce(function(s,c){return s+c.qty},0);['cartBadge','niCartBadge'].forEach(function(id){var b=document.getElementById(id);if(b){b.textContent=n;b.style.display=n>0?'flex':'none'}})}
+function toggleCart(){openCart()}
+function openCart(){renderCart();document.getElementById('cartOverlay').classList.add('open')}
+function closeCart(){document.getElementById('cartOverlay').classList.remove('open')}
 function renderCart(){
-  var total=cart.reduce(function(s,c){return s+c.price*c.qty;},0);
-  var html='<div class="cart-head"><span>🛒 购物车 ('+cart.length+'件)</span><button style="background:none;border:none;font-size:18px;cursor:pointer;" onclick="closeCart()">✕</button></div><div class="cart-items">';
-  if(cart.length===0){html+='<div class="empty"><div class="icon">🛒</div>购物车是空的</div>';}
-  else{cart.forEach(function(c){
-    html+='<div class="cart-item"><div class="ci-img">'+renderBottle(c,false)+'</div>';
-    html+='<div class="ci-info"><div class="ci-name">'+escHtml(c.name)+'</div><div class="ci-price">¥'+(c.price*c.qty)+'</div></div>';
-    html+='<div class="qty-ctrl"><button onclick="changeQty('+c.id+',-1)">-</button><span>'+c.qty+'</span><button onclick="changeQty('+c.id+',1)">+</button></div></div>';
-  });}
-  html+='</div><div class="cart-foot"><div class="total"><span>合计</span><span class="amt">¥'+total+'</span></div>';
-  html+='<button class="btn-checkout" onclick="closeCart();goCheckout()"'+(cart.length===0?' disabled':'')+'>去结算</button></div>';
-  document.getElementById('cartDrawer').innerHTML=html;
+  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+  var h='<div class="cart-head"><span>🛒 购物车 ('+cart.length+'件)</span><button onclick="closeCart()">✕</button></div><div class="cart-items">';
+  if(cart.length===0)h+='<div class="empty"><div class="icon">🛒</div>空的</div>';
+  else cart.forEach(function(c){h+='<div class="cart-item"><div class="ci-img">'+renderBottle(c,false)+'</div><div class="ci-info"><div class="ci-name">'+escHtml(c.name)+'</div><div class="ci-price">¥'+(c.price*c.qty)+'</div></div><div class="qty-ctrl"><button onclick="changeQty('+c.id+',-1)">-</button><span>'+c.qty+'</span><button onclick="changeQty('+c.id+',1)">+</button></div></div>'});
+  h+='</div><div class="cart-foot"><div class="total"><span>合计</span><span class="amt">¥'+t+'</span></div><button class="btn btn-gold" style="width:100%" onclick="closeCart();goCheckout()"'+(cart.length===0?' disabled':'')+'>去结算</button></div>';
+  document.getElementById('cartDrawer').innerHTML=h
 }
-function buyNow(){closeDetail();goCheckout();}
-function goCheckout(){if(cart.length===0){toast('购物车是空的');return;}navigateTo('checkout');}
+function buyNow(){closeDetail();goCheckout()}
+function goCheckout(){if(cart.length===0){toast('空的');return}navTo('checkout')}
 
 // ============ 结算 ============
 function renderCheckout(){
-  if(cart.length===0){navigateTo('home');toast('购物车是空的');return;}
-  var total=cart.reduce(function(s,c){return s+c.price*c.qty;},0);
-  loadSettings();paymentProofData=null;paymentMethod='wechat';
-  var html='<div class="checkout-sec"><div class="sec-label">📍 收货信息</div>';
-  html+='<input class="form-input" id="chkName" placeholder="收货人姓名">';
-  html+='<input class="form-input" id="chkPhone" placeholder="手机号码">';
-  html+='<textarea class="form-input" id="chkAddr" placeholder="详细地址" rows="2" style="resize:none;"></textarea></div>';
-  html+='<div class="checkout-sec"><div class="sec-label">📦 商品清单</div>';
-  cart.forEach(function(c){html+='<div class="order-item"><span style="font-size:24px;">🍾</span><span class="oi-name">'+escHtml(c.name)+'</span><span>×'+c.qty+'</span><span class="oi-price">¥'+(c.price*c.qty)+'</span></div>';});
-  html+='<div style="text-align:right;padding-top:10px;font-size:20px;font-weight:900;color:var(--red);">合计 ¥'+total+'</div></div>';
-  html+='<div class="checkout-sec"><div class="sec-label">💳 支付方式</div>';
-  html+='<div class="pay-option active" onclick="selectPay(\'wechat\')" id="pay-wechat"><div class="pay-radio"></div><span class="pay-icon">💚</span><span class="pay-label">微信支付</span></div>';
-  html+='<div class="pay-option" onclick="selectPay(\'alipay\')" id="pay-alipay"><div class="pay-radio"></div><span class="pay-icon">💙</span><span class="pay-label">支付宝</span></div></div>';
-  html+='<div class="checkout-sec qr-section"><div class="qr-amount">请支付 ¥'+total+'</div><div class="qr-box" id="qrBox">';
-  var qrUrl=paymentMethod==='wechat'?settings.wechatQr:settings.alipayQr;
-  if(qrUrl){html+='<img src="'+qrUrl+'" alt="付款码" onerror="this.innerHTML=\'<div class=no-qr>加载失败</div>\'">';}
-  else{html+='<div class="no-qr">尚未设置'+(paymentMethod==='wechat'?'微信':'支付宝')+'收款码<br>👆 点底部"设置"上传</div>';}
-  html+='</div><div class="qr-hint">请使用'+(paymentMethod==='wechat'?'微信':'支付宝')+'扫码付款</div>';
-  html+='<div class="upload-box" onclick="document.getElementById(\'proofInput\').click()"><img class="preview-img" id="proofPreview"><div class="upload-text" id="uploadText">📎 点击上传付款截图</div></div>';
-  html+='<input type="file" id="proofInput" accept="image/*" style="display:none" onchange="handleProofUpload(event)"></div>';
-  html+='<div style="padding:0 16px 30px;"><button class="btn-confirm" onclick="submitOrder()">确认下单</button></div>';
-  document.getElementById('checkoutContent').innerHTML=html;
-  var addr={};try{addr=JSON.parse(localStorage.getItem('jiuxiang_addr'))||{};}catch(e){}
-  document.getElementById('chkName').value=addr.name||'';document.getElementById('chkPhone').value=addr.phone||'';document.getElementById('chkAddr').value=addr.addr||'';
+  if(cart.length===0){navTo('home');return}
+  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);loadSettings();paymentProofData=null;paymentMethod='wechat';
+  var h='<div class="chk-sec"><div class="chk-label">📍 收货信息</div><input class="chk-input" id="chkName" placeholder="收货人姓名"><input class="chk-input" id="chkPhone" placeholder="手机号码"><textarea class="chk-input" id="chkAddr" placeholder="详细地址" rows="2" style="resize:none"></textarea></div>';
+  h+='<div class="chk-sec"><div class="chk-label">📦 商品</div>';
+  cart.forEach(function(c){h+='<div style="display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;color:var(--text)"><span style="flex:1">'+escHtml(c.name)+'</span><span>×'+c.qty+'</span><span style="color:var(--gold);font-weight:600">¥'+(c.price*c.qty)+'</span></div>'});
+  h+='<div style="text-align:right;padding-top:10px;font-size:20px;font-weight:900;color:var(--gold)">合计 ¥'+t+'</div></div>';
+  h+='<div class="chk-sec"><div class="chk-label">💳 支付</div><div class="pay-opt active" onclick="selPay(\'wechat\')" id="pay-wechat"><div class="pay-dot"></div><span class="pay-label">💚 微信支付</span></div><div class="pay-opt" onclick="selPay(\'alipay\')" id="pay-alipay"><div class="pay-dot"></div><span class="pay-label">💙 支付宝</span></div></div>';
+  h+='<div class="chk-sec"><div class="qr-wrap"><div class="qr-amt">请支付 ¥'+t+'</div><div class="qr-box" id="qrBox">';
+  var qr=paymentMethod==='wechat'?settings.wechatQr:settings.alipayQr;
+  h+=qr?'<img src="'+qr+'" alt="付款码">':'<div style="color:var(--text2);font-size:12px;text-align:center;line-height:1.8">尚未设置收款码<br>联系客服获取</div>';
+  h+='</div><div class="qr-hint">使用'+(paymentMethod==='wechat'?'微信':'支付宝')+'扫码付款</div><div class="upload-zone" onclick="document.getElementById(\'proofInput\').click()"><img id="proofPreview"><div class="up-text" id="upText">📎 点击上传付款截图</div></div><input type="file" id="proofInput" accept="image/*" style="display:none" onchange="handleProof(event)"></div></div>';
+  h+='<div style="padding:0 16px 30px"><button class="btn btn-gold" style="width:100%" onclick="submitOrder()">确认下单</button></div>';
+  document.getElementById('chkContent').innerHTML=h;
+  var a={};try{a=JSON.parse(localStorage.getItem('jxp_addr'))||{}}catch(e){}
+  document.getElementById('chkName').value=a.name||'';document.getElementById('chkPhone').value=a.phone||'';document.getElementById('chkAddr').value=a.addr||''
 }
-function selectPay(method){
-  paymentMethod=method;
-  document.querySelectorAll('.pay-option').forEach(function(o){o.classList.remove('active');});
-  document.getElementById('pay-'+method).classList.add('active');
-  var qrUrl=method==='wechat'?settings.wechatQr:settings.alipayQr;
-  var qb=document.getElementById('qrBox');
-  if(qb){qb.innerHTML=qrUrl?'<img src="'+qrUrl+'" alt="付款码">':'<div class="no-qr">尚未设置'+(method==='wechat'?'微信':'支付宝')+'收款码<br>👆 点底部"设置"上传</div>';}
-  document.getElementById('proofPreview').style.display='none';document.getElementById('uploadText').style.display='';paymentProofData=null;
+function selPay(m){
+  paymentMethod=m;document.querySelectorAll('.pay-opt').forEach(function(o){o.classList.remove('active')});document.getElementById('pay-'+m).classList.add('active');
+  var q=paymentMethod==='wechat'?settings.wechatQr:settings.alipayQr;
+  var qb=document.getElementById('qrBox');if(qb)qb.innerHTML=q?'<img src="'+q+'">':'<div style="color:var(--text2);font-size:12px;text-align:center;line-height:1.8">尚未设置收款码</div>';
+  document.getElementById('proofPreview').style.display='none';document.getElementById('upText').style.display='';paymentProofData=null
 }
-function handleProofUpload(e){
-  var file=e.target.files[0];if(!file)return;
-  var reader=new FileReader();
-  reader.onload=function(ev){paymentProofData=ev.target.result;var pv=document.getElementById('proofPreview');pv.src=paymentProofData;pv.style.display='block';document.getElementById('uploadText').style.display='none';};
-  reader.readAsDataURL(file);
-}
+function handleProof(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(ev){paymentProofData=ev.target.result;var pv=document.getElementById('proofPreview');pv.src=paymentProofData;pv.style.display='block';document.getElementById('upText').style.display='none'};r.readAsDataURL(f)}
 function submitOrder(){
-  var name=document.getElementById('chkName').value.trim(),phone=document.getElementById('chkPhone').value.trim(),addr=document.getElementById('chkAddr').value.trim();
-  if(!name||!phone||!addr){toast('请填写完整的收货信息');return;}
-  localStorage.setItem('jiuxiang_addr',JSON.stringify({name:name,phone:phone,addr:addr}));
-  var total=cart.reduce(function(s,c){return s+c.price*c.qty;},0);
-  var order={id:'JX'+Date.now().toString(36).toUpperCase(),items:JSON.parse(JSON.stringify(cart)),total:total,paymentMethod:paymentMethod,paymentProof:paymentProofData,address:{name:name,phone:phone,addr:addr},status:'pending',createdAt:new Date().toISOString()};
-  var orders=getOrders();orders.unshift(order);saveOrders(orders);
-  cart=[];updateCartBadge();toast('下单成功！');navigateTo('orders');
+  var n=document.getElementById('chkName').value.trim(),p=document.getElementById('chkPhone').value.trim(),a=document.getElementById('chkAddr').value.trim();
+  if(!n||!p||!a){toast('请填写完整信息');return}
+  localStorage.setItem('jxp_addr',JSON.stringify({name:n,phone:p,addr:a}));
+  var t=cart.reduce(function(s,c){return s+c.price*c.qty},0);
+  var o={id:'JX'+Date.now().toString(36).toUpperCase(),items:JSON.parse(JSON.stringify(cart)),total:t,paymentMethod:paymentMethod,paymentProof:paymentProofData,address:{name:n,phone:p,addr:a},status:'pending',createdAt:new Date().toISOString()};
+  var ord=getOrders();ord.unshift(o);saveOrders(ord);cart=[];updateCartBadge();toast('下单成功');navTo('orders')
 }
 
 // ============ 订单 ============
 function renderOrders(){
-  var orders=getOrders(),html='';
-  if(orders.length===0){html='<div class="empty"><div class="icon">📋</div>暂无订单</div>';}
-  else{orders.forEach(function(o,i){
+  var ord=getOrders(),h='';
+  if(ord.length===0)h='<div class="empty"><div class="icon">📋</div>暂无订单</div>';
+  else ord.forEach(function(o,i){
     var st={pending:'待确认',paid:'已付款',shipped:'已发货'};
-    var ih=o.items.map(function(it){return escHtml(it.name)+' ×'+it.qty;}).join('<br>');
-    html+='<div class="order-card"><div class="oc-head"><span class="oc-id">'+o.id+'</span><span class="order-status '+o.status+'">'+(st[o.status]||o.status)+'</span></div>';
-    html+='<div class="oc-products">'+ih+'</div><div class="oc-total">¥'+o.total+'</div>';
-    html+='<div style="font-size:11px;color:#bbb;margin-top:4px;">'+o.paymentMethod+' · '+new Date(o.createdAt).toLocaleString('zh-CN')+'</div>';
-    if(o.paymentProof) html+='<div style="margin-top:8px;"><img src="'+o.paymentProof+'" style="width:80px;border-radius:6px;border:1px solid #eee;" onclick="window.open(this.src)"></div>';
-    html+=(o.status==='pending'?'<div class="oc-actions"><button class="btn-sm gold" onclick="markPaid('+i+')">标记已付款</button><button class="btn-sm white" onclick="deleteOrder('+i+')">删除</button></div>':(o.status==='paid'?'<div class="oc-actions"><button class="btn-sm gold" onclick="markShipped('+i+')">标记已发货</button></div>':''));
-    html+='</div>';
-  });}
-  document.getElementById('ordersContent').innerHTML=html;
+    h+='<div class="order-card"><div class="oc-head"><span class="oc-id">'+o.id+'</span><span class="oc-status '+o.status+'">'+(st[o.status]||o.status)+'</span></div>';
+    h+='<div class="oc-products">'+o.items.map(function(it){return escHtml(it.name)+' ×'+it.qty}).join('<br>')+'</div><div class="oc-total">¥'+o.total+'</div>';
+    h+='<div style="font-size:11px;color:var(--text2);margin-top:4px">'+new Date(o.createdAt).toLocaleString('zh-CN')+'</div>';
+    if(o.paymentProof)h+='<div style="margin-top:8px"><img src="'+o.paymentProof+'" style="width:80px;border-radius:6px" onclick="window.open(this.src)"></div>';
+    h+=o.status==='pending'?'<div class="oc-actions"><button class="btn-sm gold" onclick="markPaid('+i+')">标记已付款</button><button class="btn-sm ghost" onclick="delOrder('+i+')">删除</button></div>':o.status==='paid'?'<div class="oc-actions"><button class="btn-sm gold" onclick="markShipped('+i+')">标记已发货</button></div>':'';
+    h+='</div>'
+  });
+  document.getElementById('ordContent').innerHTML=h
 }
-function markPaid(i){updateOrderStatus(i,'paid');}
-function markShipped(i){updateOrderStatus(i,'shipped');}
-function deleteOrder(i){if(!confirm('确定删除？'))return;var o=getOrders();o.splice(i,1);saveOrders(o);renderOrders();toast('已删除');}
-function updateOrderStatus(i,s){var o=getOrders();if(i>=0&&i<o.length){o[i].status=s;saveOrders(o);renderOrders();toast('已更新');}}
+function markPaid(i){updateOrd(i,'paid')}function markShipped(i){updateOrd(i,'shipped')}
+function delOrder(i){if(!confirm('删除?'))return;var o=getOrders();o.splice(i,1);saveOrders(o);renderOrders()}
+function updateOrd(i,s){var o=getOrders();if(i>=0&&i<o.length){o[i].status=s;saveOrders(o);renderOrders();toast('已更新')}}
 
-// ============ 设置 ============
-function renderSettings(){
-  loadSettings();
-  var html='<div class="settings-item"><label>店铺名称</label><input class="form-input" id="setName" value="'+escAttr(settings.shopName)+'" onchange="updateSetting(\'shopName\',this.value)"></div>';
-  html+='<div class="settings-item"><label>微信收款码 URL</label><input class="form-input" id="setWxQr" value="'+escAttr(settings.wechatQr)+'" onchange="updateSetting(\'wechatQr\',this.value)" placeholder="https://..."></div>';
-  html+='<div class="settings-item"><label>支付宝收款码 URL</label><input class="form-input" id="setAliQr" value="'+escAttr(settings.alipayQr)+'" onchange="updateSetting(\'alipayQr\',this.value)" placeholder="https://..."></div>';
-  html+='<div class="settings-item"><label>客服电话</label><input class="form-input" id="setPhone" value="'+escAttr(settings.contactPhone)+'" onchange="updateSetting(\'contactPhone\',this.value)"></div>';
-  html+='<div class="settings-item"><label>购买须知</label><textarea class="form-input" id="setNotice" rows="3" onchange="updateSetting(\'notice\',this.value)" style="resize:none;">'+escHtml(settings.notice)+'</textarea></div>';
-  html+='<div style="text-align:center;padding:20px;"><button class="btn-sm gold" onclick="resetAllData()">🗑 重置全部数据</button></div>';
-  document.getElementById('settingsContent').innerHTML=html;
+// ============ 管理后台 ============
+var logoClicks=0,logoTimeout;
+function logoClick(){logoClicks++;clearTimeout(logoTimeout);if(logoClicks>=5){logoClicks=0;showAdminLogin()}logoTimeout=setTimeout(function(){logoClicks=0},1500)}
+function showAdminLogin(){document.getElementById('adminPwd').style.display='flex';document.getElementById('adminOverlay').classList.add('open');document.getElementById('pwdInput').value='';setTimeout(function(){document.getElementById('pwdInput').focus()},300)}
+function checkPwd(){if(document.getElementById('pwdInput').value===adminPassword){document.getElementById('adminPwd').style.display='none';renderAdmin()}else toast('密码错误')}
+
+function renderAdmin(){
+  var h='<div class="admin-panel"><div class="admin-head"><h3>⚙️ 管理后台</h3><button onclick="closeAdmin()">✕</button></div><div class="admin-body">';
+  h+='<div style="display:flex;gap:8px;margin-bottom:16px"><button class="btn-sm gold" onclick="addNewProduct()">+ 添加商品</button><button class="btn-sm ghost" onclick="syncToGitHub()">📤 同步到服务器</button><button class="btn-sm ghost" onclick="exportData()">📥 导出数据</button></div>';
+  h+='<div style="margin-bottom:14px"><div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">🔑 修改管理员密码</div><input class="chk-input" id="newPwd" placeholder="新密码" style="margin-bottom:6px"><button class="btn-sm gold" onclick="changePwd()">修改密码</button></div>';
+  h+='<div style="margin-bottom:14px"><div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">🔐 API 令牌（同步到服务器需要）</div><input class="chk-input" id="admGhToken" value="'+escAttr(ghToken)+'" placeholder="GitHub Token (ghp_...)" type="password"><input class="chk-input" id="admGiteeToken" value="'+escAttr(giteeToken)+'" placeholder="Gitee Token" type="password"><button class="btn-sm gold" onclick="saveTokens_ui()">保存令牌</button></div>';
+  h+='<div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:10px">📦 商品列表 ('+products.length+'件)</div>';
+  products.forEach(function(p,i){
+    h+='<div style="background:var(--dark3);border-radius:10px;padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.04)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="color:var(--text);font-weight:600;font-size:13px">#'+p.id+' '+escHtml(p.name).substring(0,20)+'...</span><span style="color:var(--gold);font-weight:700">¥'+p.price+'</span></div>';
+    h+='<div style="display:flex;gap:6px"><button class="btn-sm ghost" style="font-size:11px" onclick="editProduct('+i+')">✎ 编辑</button><button class="btn-sm ghost" style="font-size:11px" onclick="dupProduct('+i+')">⧉ 复制</button><button class="btn-sm ghost" style="font-size:11px;color:var(--red)" onclick="delProduct('+i+')">✕ 删除</button></div></div>'
+  });
+  h+='<div style="margin-top:16px"><div class="chk-label" style="font-size:11px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">💳 收款码设置</div><input class="chk-input" id="admWxQr" value="'+escAttr(settings.wechatQr)+'" placeholder="微信收款码 URL"><input class="chk-input" id="admAliQr" value="'+escAttr(settings.alipayQr)+'" placeholder="支付宝收款码 URL"><input class="chk-input" id="admShop" value="'+escAttr(settings.shopName)+'" placeholder="店铺名称"><button class="btn-sm gold" onclick="saveAdmSettings()">保存设置</button></div>';
+  h+='</div></div>';
+  document.getElementById('adminContent').innerHTML=h;document.getElementById('adminOverlay').classList.add('open')
 }
-function updateSetting(k,v){settings[k]=v;saveSettings();}
-function resetAllData(){if(!confirm('确定清空所有数据？'))return;['jiuxiang_settings','jiuxiang_orders','jiuxiang_addr'].forEach(function(k){localStorage.removeItem(k);});cart=[];updateCartBadge();loadSettings();toast('已重置');navigateTo('home');}
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open')}
+function changePwd(){var np=document.getElementById('newPwd').value.trim();if(!np){toast('请输入新密码');return};adminPassword=np;saveTokens();toast('密码已修改')}
+function saveTokens_ui(){ghToken=document.getElementById('admGhToken').value.trim();giteeToken=document.getElementById('admGiteeToken').value.trim();saveTokens();renderAdmin();toast('令牌已保存')}
+
+function editProduct(i){
+  var p=products[i];var h='<div class="admin-panel"><div class="admin-head"><h3>编辑商品 #'+p.id+'</h3><button onclick="renderAdmin()">✕</button></div><div class="admin-body">';
+  h+='<div class="fg"><label>名称</label><input id="epName" value="'+escAttr(p.name)+'"></div>';
+  h+='<div class="fg-row"><div class="fg"><label>售价 ¥</label><input id="epPrice" type="number" value="'+p.price+'"></div><div class="fg"><label>原价 ¥</label><input id="epOrig" type="number" value="'+p.orig+'"></div></div>';
+  h+='<div class="fg-row"><div class="fg"><label>分类</label><select id="epCat">';['白酒','红酒','啤酒','洋酒','清酒','礼盒'].forEach(function(c){h+='<option'+(p.cat===c?' selected':'')+'>'+c+'</option>'});h+='</select></div><div class="fg"><label>瓶型</label><select id="epB">';['maotai','wuliangye','jiannanchun','langjiu','wine','spirit','beer','sake','gift'].forEach(function(b){h+='<option'+(p.b===b?' selected':'')+'>'+b+'</option>'});h+='</select></div></div>';
+  h+='<div class="fg-row"><div class="fg"><label>品牌</label><input id="epBrand" value="'+escAttr(p.brand)+'"></div><div class="fg"><label>型号</label><input id="epBtype" value="'+escAttr(p.btype)+'"></div></div>';
+  h+='<div class="fg-row"><div class="fg"><label>酒精度</label><input id="epAlc" value="'+escAttr(p.alc)+'"></div><div class="fg"><label>容量</label><input id="epVol" value="'+escAttr(p.vol)+'"></div></div>';
+  h+='<div class="fg-row"><div class="fg"><label>评分</label><input id="epRank" type="number" step="0.1" value="'+p.rank+'"></div><div class="fg"><label>销量</label><input id="epSales" type="number" value="'+p.sales+'"></div></div>';
+  h+='<div class="fg"><label>标签</label><input id="epTag" value="'+escAttr(p.tag||'')+'"></div>';
+  h+='<div class="fg"><label>标签颜色</label><input id="epBcolor" value="'+escAttr(p.bcolor)+'"></div>';
+  h+='<div class="fg"><label>描述</label><textarea id="epDesc" rows="3">'+escHtml(p.desc)+'</textarea></div>';
+  h+='<button class="btn btn-gold" style="width:100%;margin-top:8px" onclick="saveEdit('+i+')">保存</button></div></div>';
+  document.getElementById('adminContent').innerHTML=h
+}
+function saveEdit(i){
+  var p=products[i];
+  p.name=document.getElementById('epName').value.trim();
+  p.price=parseFloat(document.getElementById('epPrice').value)||0;
+  p.orig=parseFloat(document.getElementById('epOrig').value)||0;
+  p.cat=document.getElementById('epCat').value;
+  p.b=document.getElementById('epB').value;
+  p.brand=document.getElementById('epBrand').value.trim();
+  p.btype=document.getElementById('epBtype').value.trim();
+  p.alc=document.getElementById('epAlc').value.trim();
+  p.vol=document.getElementById('epVol').value.trim();
+  p.rank=parseFloat(document.getElementById('epRank').value)||0;
+  p.sales=parseInt(document.getElementById('epSales').value)||0;
+  p.tag=document.getElementById('epTag').value.trim();
+  p.bcolor=document.getElementById('epBcolor').value.trim();
+  p.desc=document.getElementById('epDesc').value.trim();
+  saveProducts();renderAdmin();renderHome();toast('已保存')
+}
+function addNewProduct(){
+  var id=Math.max.apply(null,products.map(function(p){return p.id}))+1;
+  products.push({id:id,name:'新商品',cat:'白酒',price:999,orig:1999,alc:'52%',vol:'500ml',tag:'新品',b:'maotai',brand:'品牌',btype:'型号',bcolor:'#c41e2a',btext:'#ffd700',rank:4.5,sales:0,desc:'商品描述'});
+  saveProducts();var i=products.length-1;renderAdmin();setTimeout(function(){editProduct(i)},200)
+}
+function dupProduct(i){var c=JSON.parse(JSON.stringify(products[i]));c.id=Math.max.apply(null,products.map(function(p){return p.id}))+1;c.name+='（副本）';products.splice(i+1,0,c);saveProducts();renderAdmin();toast('已复制')}
+function delProduct(i){if(!confirm('确定删除 '+products[i].name+'？'))return;products.splice(i,1);saveProducts();renderAdmin();renderHome();toast('已删除')}
+function saveAdmSettings(){settings.wechatQr=document.getElementById('admWxQr').value.trim();settings.alipayQr=document.getElementById('admAliQr').value.trim();settings.shopName=document.getElementById('admShop').value.trim();saveSettings();toast('设置已保存')}
+
+// ============ GitHub 同步 ============
+function syncToGitHub(){
+  if(!ghToken){toast('未配置 GitHub Token');return}
+  var data=JSON.stringify(products,null,2);
+  var b64='';for(var i=0;i<data.length;i++){var c=data.charCodeAt(i);if(c<128)b64+=String.fromCharCode(c);else if(c<2048){b64+=String.fromCharCode(192|c>>6);b64+=String.fromCharCode(128|c&63)}else{b64+=String.fromCharCode(224|c>>12);b64+=String.fromCharCode(128|c>>6&63);b64+=String.fromCharCode(128|c&63)}}b64=btoa(b64);
+  var body=JSON.stringify({message:'Admin: update products',content:b64});
+  fetch('https://api.github.com/repos/'+ghRepo+'/contents/products.json',{method:'PUT',headers:{'Authorization':'Bearer '+ghToken,'Accept':'application/vnd.github+json','Content-Type':'application/json'},body:body}).then(function(r){return r.json()}).then(function(d){
+    if(d.content)toast('已同步到 GitHub 服务器');
+    else if(d.message)toast('同步失败: '+d.message);
+    else toast('同步成功')
+  }).catch(function(e){toast('网络错误，请重试')})
+function exportData(){
+  var blob=new Blob([JSON.stringify({products:products,settings:settings},null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='jiuxiang-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();
+  toast('已导出')
+}
 
 // ============ 工具 ============
-function escHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
-function escAttr(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function fmtNum(n){return n>=10000?(n/10000).toFixed(1)+'万':n;}
-function toast(msg){var t=document.createElement('div');t.className='toast';t.textContent=msg;document.getElementById('app').appendChild(t);setTimeout(function(){t.remove();},1500);}
+function escHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function escAttr(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmtNum(n){return n>=10000?(n/10000).toFixed(1)+'万':n}
+function toast(msg){var t=document.createElement('div');t.className='toast';t.textContent=msg;document.getElementById('app').appendChild(t);setTimeout(function(){t.remove()},1800)}
 
-document.getElementById('nav-home').addEventListener('click',function(){pageHistory=['home'];navigateTo('home');});
-document.getElementById('nav-orders').addEventListener('click',function(){pageHistory=['home','orders'];navigateTo('orders');});
-document.getElementById('nav-settings').addEventListener('click',function(){pageHistory=['home','settings'];navigateTo('settings');});
+// ============ 导航事件 ============
+document.getElementById('ni-home').addEventListener('click',function(){pageHistory=['home'];navTo('home')});
+document.getElementById('ni-orders').addEventListener('click',function(){pageHistory=['home','orders'];navTo('orders')});
 
-loadSettings();
-renderHome();
+// ============ 初始化 ============
+loadTokens();loadProducts();loadSettings();renderHome()
 </script>
 </body>
 </html>
